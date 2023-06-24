@@ -1,0 +1,37 @@
+{% extends 'partials/base.html' %}
+
+{% load static %}
+
+
+{% block main %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Sistemas</h1>
+</div>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6 mb-2">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Cadastro AD</h5>
+                    <p class="card-text">Sistema de script para criação de usuário AD
+                    </p>
+                    <a href="{% url 'criausuario' %}" class="btn btn-primary custom-width-6">Entrar</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 mb-2">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Lorem Ipsum</h5>
+                    <p class="card-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+                    </p>
+                    <a href="{% url 'criausuariotest' %}" class="btn btn-primary custom-width-6">modelo 2</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

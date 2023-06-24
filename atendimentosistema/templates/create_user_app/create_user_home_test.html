@@ -1,0 +1,96 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+
+
+{% block main %}
+
+
+<div
+class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Criar usuário Active Directory</h1>
+  <div class="btn-toolbar mb-2 mb-md-0">
+    <div class="btn-group mt-3 me-2">
+      <a href="{% url 'home' %}"><button type="button"
+        class="btn btn-primary">Voltar</button></a>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <form action="{% url 'criarScript' %}" method="POST">
+      {% csrf_token %}
+    <input class="form-control countField" name="countField" id="countField" type="text"  style="display: none;" >
+    <div class="field_wrapper">
+      <div class="row">
+        <div class="col-3 m-1">
+          <input class="form-control " type="text"
+          name="field_nome[0]" value=""
+          placeholder="Nome completo" />
+        </div>
+        <div class="col-2 m-1">
+          <input class="form-control " type="text"
+            name="field_email[0]" value=""
+            placeholder="nome.sobrenome" />
+        </div>
+        <div class="col-1 m-1">
+          <input class="form-control " type="text"
+            name="field_uo[0]" value="" placeholder="UO" />
+        </div>
+        <div class="col-2 m-1">
+          <select class="form-control" name="field_tipo[0]"
+            aria-label=".form-select-lg example"
+            id="tipodefuncionario">
+            <option selected value="funcionario">Funcionário</option>
+            <option value="estagiaria">Estagiário</option>
+            <option value="temporario">Temporário</option>
+            <option value="pj">PJ</option>
+          </select>
+        </div>
+        <div class="col-1 m-1">
+          <select class="form-control"
+            name="field_licenca[0]"
+            aria-label=".form-select-sm example"
+            id="tipodelicenca">
+            <option selected value="lica1">LIC-A1</option>
+            <option value="lica3" >LIC-A3</option>
+          </select>
+        </div>
+        <div class="col-2 m-1">
+          <input  type="date" id="date" class="form-control"
+            name="field_datacontrato[0]"
+            placeholder="Data do contrato">
+        </div>
+      </div>
+    </div>
+    <div class="row ">
+      <div class="col-12 text-center m-3 ">
+        <a href="javascript:void(0);"
+          class="add_button btn btn-primary"
+          title="Add field">Adicionar campo</a>
+        <button id="btnOc" type="submit"
+          class="btn btn-primary">Criar script 
+          ps1</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+    
+<input class="form-control" id="disabledInput" type="text"
+  placeholder="
+Grupos inseridos automaticamente de acordo com a UO escolhida"
+  disabled>
+<input class="form-control" id="disabledInput" type="text"
+  placeholder="
+Proxyaddresses inserido automaticamente" disabled>
+<input class="form-control" id="disabledInput" type="text"
+  placeholder="
+Senha com padrão aleatório ou o estabelecido anteriormente"
+  disabled>
+<input class="form-control" id="disabledInput" type="text"
+  placeholder="
+Descrição de temporário/Estagiário inserido automaticamente"
+  disabled>
+
+
+
+{% endblock %}
