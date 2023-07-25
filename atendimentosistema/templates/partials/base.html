@@ -53,10 +53,9 @@
                   {% endif %}  
                   {% if user.is_authenticated %}
                   <a class="dropdown-item" href="#"><strong>Usuário: {{user.username}}</strong></a>
-                    <a class="dropdown-item" href="/alteraSenha">Alterar senha</a>
-                    <a class="dropdown-item" href="/accounts/logout/">Logout</a>
+                    <a class="dropdown-item" href="/admin/logout/">Logout</a>
                   {% else %}
-                    <a class="dropdown-item" href="/accounts/login/">Login</a>
+                    <a class="dropdown-item" href="/admin/">Login</a>
                   {% endif %}
                 </div>
               </li>
