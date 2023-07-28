@@ -16,6 +16,9 @@ def createUserTest(request):
     context = {}
     return render(request, 'create_user_app/create_user_home_test.html', context)
 
+def nameSplit(fullname):
+    firstname, lastname = fullname.split(" ", 1)
+    return firstname, lastname
 
 def createScript(request):
     nome = []
