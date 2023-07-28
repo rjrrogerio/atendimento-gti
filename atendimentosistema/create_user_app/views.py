@@ -11,14 +11,13 @@ def createUser(request):
     context = {}
     return render(request, 'create_user_app/create_user_home.html', context)
 
-
-def createUserTest(request):
-    context = {}
-    return render(request, 'create_user_app/create_user_home_test.html', context)
-
 def nameSplit(fullname):
     firstname, lastname = fullname.split(" ", 1)
     return firstname, lastname
+
+def normalize(fullname):
+    name_normalize = fullname.title()
+    return name_normalize
 
 def createScript(request):
     nome = []
