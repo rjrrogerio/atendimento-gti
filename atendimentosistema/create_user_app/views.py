@@ -4,7 +4,7 @@ import string
 import random
 
 
-def id_generator(size=10, chars=string.ascii_uppercase+string.ascii_lowercase + string.digits):
+def idGenerator(size=10, chars=string.ascii_uppercase+string.ascii_lowercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
 def createUser(request):
@@ -39,7 +39,7 @@ def createScript(request):
             tipo.append(request.POST.get('field_tipo[{}]'.format(i)))
             licenca.append(request.POST.get('field_licenca[{}]'.format(i)))
             datacontrato.append(request.POST.get('field_datacontrato[{}]'.format(i)))
-            senha.append(id_generator())
+            senha.append(idGenerator())
             file_data.append('New-ADUser -Name "{}" -GivenName "{}" -Surname "{}" -SamAccountName "{}" -UserPrincipalName "{}" -Path "OU=Users,OU=Accounts,OU=Berlin,OU=DE,DC=woshub,DC=com";'.format(nome[i],email[i],uo[i],tipo[i],licenca[i]))
 
         print(nome)
