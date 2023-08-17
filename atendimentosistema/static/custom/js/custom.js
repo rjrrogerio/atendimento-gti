@@ -32,8 +32,7 @@ $(function () {
     if (x != 1){
       x--;
     }
-    var elems = document.querySelectorAll('.line' + x);
-    
+    var elems = document.querySelectorAll('.line' + x);    
     document.getElementById('countField').value = x
     elems.forEach(function (element) {
       element.parentNode.removeChild(element);
