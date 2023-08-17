@@ -6,8 +6,8 @@ from datetime import datetime
 from .models import Unidade
 
 
-def createPassword(full_name,unidade):
-    iniciais_do_nome = "".join([ letra[0] for letra in full_name.split()])
+def createPassword(fullname,unidade):
+    iniciais_do_nome = "".join([ letra[0] for letra in fullname.split()])
     senha = str(randint(100,999)) +"_"+ iniciais_do_nome.title() +"#"+ unidade
     return senha
 
@@ -16,16 +16,16 @@ def createUser(request):
     context = {'query': query_unidade}
     return render(request, 'create_user_app/create_user_home.html', context)
 
-def nameSplit(full_name):
+def nameSplit(fullname):
     try:
-        firstname, lastname = full_name.split(" ", 1)
+        primeiro_nome, sobrenome = fullname.split(" ", 1)
     except:
-        firstname, lastname = full_name,""
-    return firstname, lastname
+        primeiro_nome, sobrenome = fullname,""
+    return primeiro_nome, sobrenome
 
-def normalize(full_name):
-    fullname_space = full_name.lstrip(" ")
-    name_normalize = fullname_space.title()
+def normalize(fullname):
+    nome_sem_espaco = fullname.lstrip(" ")
+    name_normalize = nome_sem_espaco.title()
     return name_normalize
 
 def returnUo(numeroUo):
@@ -40,10 +40,10 @@ def createScript(request):
     if request.method == "POST":
         countField = int(request.POST.get('countField'))
         for i in range(countField):
+            print(i)
             nome_completo = normalize(request.POST.get('field_nome[{}]'.format(i)))
             primeiro_nome,sobrenome = nameSplit(nome_completo)
             objeto_unidade = returnUo(request.POST.get('field_uo[{}]'.format(i)))
-            print(objeto_unidade)
             data_nao_normalizada = request.POST.get('field_data_contrato[{}]'.format(i))
             email = request.POST.get('field_email[{}]'.format(i))
             uo = objeto_unidade.numeroUo
@@ -83,7 +83,7 @@ def createScript(request):
             print("Senha: {}".format(senha))
             print("___________________________________________________________")
             
-            dados_script.append('New-ADUser -Name "{}" -GivenName "{}" -Surname "{}" -SamAccountName "{}" -UserPrincipalName "{}" -Path "OU=Users,OU=Accounts,OU=Berlin,OU=DE,DC=woshub,DC=com";'.format(primeiro_nome[i],email[i],uo[i],tipo[i],licenca[i]))
+            dados_script.append('New-ADUser -Name "{}" -GivenName "{}" -Surname "{}" -SamAccountName "{}" -UserPrincipalName "{}" -Path "OU=Users,OU=Accounts,OU=Berlin,OU=DE,DC=woshub,DC=com";'.format(primeiro_nome,email,uo,tipo,licenca))
 
         response = HttpResponse(dados_script, content_type='application/text charset=utf-8')
         response['Content-Disposition'] = 'attachment; filename="script.txt"'
