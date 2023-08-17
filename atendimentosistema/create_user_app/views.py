@@ -1,57 +1,91 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-import string
-import random
+from django.shortcuts import get_object_or_404
+from random import randint
+from datetime import datetime
+from .models import Unidade
 
 
-def idGenerator(size=10, chars=string.ascii_uppercase+string.ascii_lowercase + string.digits):
-    return ''.join(random.choice(chars) for _ in range(size))
+def createPassword(full_name,unidade):
+    iniciais_do_nome = "".join([ letra[0] for letra in full_name.split()])
+    senha = str(randint(100,999)) +"_"+ iniciais_do_nome.title() +"#"+ unidade
+    return senha
 
 def createUser(request):
-    context = {}
+    query_unidade = Unidade.objects.all()
+    context = {'query': query_unidade}
     return render(request, 'create_user_app/create_user_home.html', context)
 
-def nameSplit(fullname):
-    firstname, lastname = fullname.split(" ", 1)
+def nameSplit(full_name):
+    try:
+        firstname, lastname = full_name.split(" ", 1)
+    except:
+        firstname, lastname = full_name,""
     return firstname, lastname
 
-def normalize(fullname):
-    name_normalize = fullname.title()
+def normalize(full_name):
+    fullname_space = full_name.lstrip(" ")
+    name_normalize = fullname_space.title()
     return name_normalize
 
-def createScript(request):
-    nome = []
-    email = []
-    uo = []
-    tipo = []
-    licenca = []
-    datacontrato = []
-    senha = [] 
-    file_data = []
+def returnUo(numeroUo):
+    unidade = get_object_or_404(Unidade, numeroUo = numeroUo)
+    return unidade
 
+def createScript(request):
+
+    dados_script = []
     context = {}
+
     if request.method == "POST":
         countField = int(request.POST.get('countField'))
         for i in range(countField):
-            nome.append(request.POST.get('field_nome[{}]'.format(i)))
-            email.append(request.POST.get('field_email[{}]'.format(i)))
-            uo.append(request.POST.get('field_uo[{}]'.format(i)))
-            tipo.append(request.POST.get('field_tipo[{}]'.format(i)))
-            licenca.append(request.POST.get('field_licenca[{}]'.format(i)))
-            datacontrato.append(request.POST.get('field_datacontrato[{}]'.format(i)))
-            senha.append(idGenerator())
-            file_data.append('New-ADUser -Name "{}" -GivenName "{}" -Surname "{}" -SamAccountName "{}" -UserPrincipalName "{}" -Path "OU=Users,OU=Accounts,OU=Berlin,OU=DE,DC=woshub,DC=com";'.format(nome[i],email[i],uo[i],tipo[i],licenca[i]))
+            nome_completo = normalize(request.POST.get('field_nome[{}]'.format(i)))
+            primeiro_nome,sobrenome = nameSplit(nome_completo)
+            objeto_unidade = returnUo(request.POST.get('field_uo[{}]'.format(i)))
+            print(objeto_unidade)
+            data_nao_normalizada = request.POST.get('field_data_contrato[{}]'.format(i))
+            email = request.POST.get('field_email[{}]'.format(i))
+            uo = objeto_unidade.numeroUo
+            descricao = objeto_unidade.nomeUo
+            grupos = objeto_unidade.grupoUo
+            tipo = request.POST.get('field_tipo[{}]'.format(i))
+            if tipo != 'funcionario':
+                descricao = descricao +" "+ tipo
+            if objeto_unidade.local == 'sede':
+                grupos_Gerais = 'sede'
+            elif objeto_unidade.local == 'capital':
+                grupos_Gerais = 'capital'
+            else:
+                grupos_Gerais = 'interior'
 
-        print(nome)
-        print(email)
-        print(uo)
-        print(tipo)
-        print(licenca)
-        print(datacontrato)
-        print(senha)
+            escritorio = "SESC " + objeto_unidade.nomeUo
+            estado = "SP"
+            licenca = request.POST.get('field_licenca[{}]'.format(i))
+            data_contrato = data_nao_normalizada
+            senha = createPassword(nome_completo,request.POST.get('field_uo[{}]'.format(i)))
 
-         
-        response = HttpResponse(file_data, content_type='application/text charset=utf-8')
+
+            print("___________________________________________________________")
+            print("Nome: {}".format(primeiro_nome))
+            print("Sobrenome: {}".format(sobrenome))
+            print("Nome completo: {}".format(nome_completo))
+            print("Email: {}".format(email))
+            print("UO: {}".format(uo))
+            print("Tipo: {}".format(tipo))
+            print("Descricao: {}".format(descricao))
+            print("Grupos: {}".format(grupos))
+            print("Grupos gerais: {}".format(grupos_Gerais))
+            print("Escritorio: {}".format(escritorio))
+            print("Estado: {}".format(estado))
+            print("Tipo de licença: {} ".format(licenca))
+            print("Data do contrato: {}".format(data_contrato))
+            print("Senha: {}".format(senha))
+            print("___________________________________________________________")
+            
+            dados_script.append('New-ADUser -Name "{}" -GivenName "{}" -Surname "{}" -SamAccountName "{}" -UserPrincipalName "{}" -Path "OU=Users,OU=Accounts,OU=Berlin,OU=DE,DC=woshub,DC=com";'.format(primeiro_nome[i],email[i],uo[i],tipo[i],licenca[i]))
+
+        response = HttpResponse(dados_script, content_type='application/text charset=utf-8')
         response['Content-Disposition'] = 'attachment; filename="script.txt"'
         return response
 
