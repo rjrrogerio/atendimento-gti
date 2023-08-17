@@ -17,8 +17,7 @@ $(function () {
   var removeButton = $('.remove_button');
   var wrapper = $('.field_wrapper');
   var x = 1; //Initial field counter is 1
-
-
+  
   //when add button is clicked
   $(addButton).click(function () {
     if (x < maxField) {

@@ -15,12 +15,8 @@ class Unidade(models.Model):
         ('SP','SP'),
         ('outros','OUTROS')
     )
-    estado = models.CharField(max_length=10, choices=ESTADO_CHOICES, default='SP')
     local = models.CharField(max_length=10, choices=LOCAL_CHOICES, default='capital')
-
-
-
-
+    estado = models.CharField(max_length=10, choices=ESTADO_CHOICES, default='SP')
 
     def __str__(self):
         return '{} - {}'.format(self.numeroUo, self.nomeUo)

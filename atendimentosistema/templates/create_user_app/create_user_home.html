@@ -33,7 +33,7 @@ class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-cente
         </div>
         <div class="col-1 m-1">
           <select class="form-control" name="field_uo[0]">
-              {% for unidade in query %}
+              {% for unidade in query_unidade %}
                 <option  type="text"
                   value='{{ unidade.numeroUo }}'>{{ unidade.nomeUo }}</option>
               {% endfor %}
@@ -80,20 +80,4 @@ class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-cente
     </div>
   </form>
 </div>
-
-    
-<input class="form-control" id="disabledInput" type="text"
-  placeholder="
-Grupos inseridos automaticamente de acordo com a UO escolhida"
-  disabled>
-<input class="form-control" id="disabledInput" type="text"
-  placeholder="
-Proxyaddresses inserido automaticamente" disabled>
-<input class="form-control" id="disabledInput" type="text"
-  placeholder="
-Descrição de temporário/Estagiário inserido automaticamente"
-  disabled>
-
-
-
-{% endblock %}
+{% endblock %}              
