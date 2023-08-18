@@ -26,12 +26,14 @@ $(function () {
       $(wrapper).append(fieldHTML);
       $('#id_field_uo')
       .clone()
-      .attr('id', 'field_uo-'+ x++)
+      .attr('id', 'field_uo-'+x)
       .insertAfter($('[id^=id_field_email]:last'));
       document.getElementById('countField').value = x
+      //const innerDiv = document.getElementById('field_uo-1').querySelector('#field_uo')
       
-      document.getElementById('field_uo').setAttribute('name', 'field_uo['+x+']');
-      document.getElementById('field_uo').setAttribute('id', 'used');
+      const innerDiv = document.getElementById('field_uo-'+x++)
+      console.log(x)
+      console.log(innerDiv)
       
       
       
