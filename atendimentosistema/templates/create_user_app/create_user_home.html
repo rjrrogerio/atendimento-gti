@@ -32,7 +32,7 @@ class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-cente
             placeholder="nome.sobrenome" required="required"/>
         </div>
         <div class="col-1 m-1">
-          <select class="form-control" name="field_uo[0]">
+          <select class="form-control" id="field_uo_first" name="field_uo[0]">
               {% for unidade in query_unidade %}
                 <option  type="text"
                   value='{{ unidade.numeroUo }}'>{{ unidade.nomeUo }}</option>
@@ -80,7 +80,5 @@ class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-cente
     </div>
   </form>
 </div>
-<script type="text/javascript"> 
-  var a = "{{query_unidade_list}}";
-</script>
+
 {% endblock %}

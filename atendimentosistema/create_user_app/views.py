@@ -5,7 +5,6 @@ from random import randint
 from datetime import datetime
 from .models import Unidade
 
-
 def createPassword(fullname,unidade):
     iniciais_do_nome = "".join([ letra[0] for letra in fullname.split()])
     senha = str(randint(100,999)) +"_"+ iniciais_do_nome.title() +"#"+ unidade
@@ -13,8 +12,7 @@ def createPassword(fullname,unidade):
 
 def createUser(request):
     query_unidade = list(Unidade.objects.values('nomeUo','numeroUo'))
-    query_unidade_list = list(query_unidade)
-    context = {'query_unidade': query_unidade, 'query_unidade_list': query_unidade_list}
+    context = {'query_unidade': query_unidade}
     return render(request, 'create_user_app/create_user_home.html', context)
 
 def nameSplit(fullname):
