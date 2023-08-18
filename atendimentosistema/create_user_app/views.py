@@ -14,8 +14,7 @@ def createPassword(fullname,unidade):
 def createUser(request):
     query_unidade = list(Unidade.objects.values('nomeUo','numeroUo'))
     query_unidade_list = list(query_unidade)
-    print(query_unidade_list[1])
-    context = {'query_unidade': query_unidade}
+    context = {'query_unidade': query_unidade, 'query_unidade_list': query_unidade_list}
     return render(request, 'create_user_app/create_user_home.html', context)
 
 def nameSplit(fullname):
