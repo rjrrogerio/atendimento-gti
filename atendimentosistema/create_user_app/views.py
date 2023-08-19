@@ -1,9 +1,11 @@
-import unidecode
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from random import randint
+import unidecode
+from .criaScript import returnDataScript
 from .models import Unidade
+
 
 def createPassword(fullname,unidade):
     iniciais_do_nome = "".join([ letra[0] for letra in fullname.split()])
@@ -33,10 +35,8 @@ def returnUo(numeroUo):
     return unidade
 
 def createScript(request):
-
     dados_script = []
     context = {}
-
     if request.method == "POST":
         countField = int(request.POST.get('countField'))
         for i in range(countField):
@@ -65,7 +65,6 @@ def createScript(request):
             data_contrato = data_nao_normalizada
             senha = createPassword(nome_completo,request.POST.get('field_uo[{}]'.format(i)))
 
-
             print("___________________________________________________________")
             print("Nome: {}".format(primeiro_nome))
             print("Sobrenome: {}".format(sobrenome))
@@ -81,9 +80,8 @@ def createScript(request):
             print("Tipo de licença: {} ".format(licenca))
             print("Data do contrato: {}".format(data_contrato))
             print("Senha: {}".format(senha))
-            print("___________________________________________________________")
-            
-            dados_script.append('New-ADUser -Name "{}" -GivenName "{}" -Surname "{}" -SamAccountName "{}" -UserPrincipalName "{}" -Path "OU=Users,OU=Accounts,OU=Berlin,OU=DE,DC=woshub,DC=com";'.format(primeiro_nome,email,uo,tipo,licenca))
+    
+            dados_script = returnDataScript(dados_script,primeiro_nome,email,uo,tipo,licenca)
 
         response = HttpResponse(dados_script, content_type='application/text charset=utf-8')
         response['Content-Disposition'] = 'attachment; filename="script.txt"'
