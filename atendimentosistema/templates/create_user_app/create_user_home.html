@@ -18,7 +18,7 @@ class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-cente
   <div class="container-fluid">
     <form action="{% url 'criarScript' %}" method="POST">
       {% csrf_token %}
-    <input class="form-control countField" name="countField" id="countField" type="text" value=1 style="display: nones;" >
+    <input class="form-control countField" name="countField" id="countField" type="text" value=1 style="display: none;" >
     <div class="field_wrapper">
       <div class="row">
         <div class="col-3 m-1">
@@ -31,9 +31,9 @@ class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-cente
             name="field_email[0]" value=""
             placeholder="nome.sobrenome" required="required"/>
         </div>
-        <div class="col-1 m-1">
-          <select class="form-control" name="field_uo[0]">
-              {% for unidade in query %}
+        <div class="col-1 m-1" id="id_field_uo">
+          <select class="form-control" id="field_uo" name="field_uo[0]">
+              {% for unidade in query_unidade %}
                 <option  type="text"
                   value='{{ unidade.numeroUo }}'>{{ unidade.nomeUo }}</option>
               {% endfor %}
@@ -80,20 +80,5 @@ class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-cente
     </div>
   </form>
 </div>
-
-    
-<input class="form-control" id="disabledInput" type="text"
-  placeholder="
-Grupos inseridos automaticamente de acordo com a UO escolhida"
-  disabled>
-<input class="form-control" id="disabledInput" type="text"
-  placeholder="
-Proxyaddresses inserido automaticamente" disabled>
-<input class="form-control" id="disabledInput" type="text"
-  placeholder="
-Descrição de temporário/Estagiário inserido automaticamente"
-  disabled>
-
-
 
 {% endblock %}
