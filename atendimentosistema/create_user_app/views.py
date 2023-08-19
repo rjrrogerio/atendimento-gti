@@ -81,7 +81,7 @@ def create_script(request):
             print("Data do contrato: {}".format(data_contrato))
             print("Senha: {}".format(senha))
     
-            dados_script = return_data_script(dados_script,primeiro_nome,email,uo,tipo,licenca)
+            dados_script = return_data_script(dados_script,nome_completo,email,uo,tipo,licenca)
 
         response = HttpResponse(dados_script, content_type='application/text charset=utf-8')
         response['Content-Disposition'] = 'attachment; filename="script.txt"'
