@@ -3,21 +3,21 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from random import randint
 import unidecode
-from .criaScript import returnDataScript
+from .criaScript import return_data_script
 from .models import Unidade
 
 
-def createPassword(fullname,unidade):
+def create_password(fullname,unidade):
     iniciais_do_nome = "".join([ letra[0] for letra in fullname.split()])
     senha = str(randint(100,999)) +"_"+ iniciais_do_nome.title() +"#"+ unidade
     return senha
 
-def createUser(request):
+def create_user(request):
     query_unidade = list(Unidade.objects.values('nomeUo','numeroUo'))
     context = {'query_unidade': query_unidade}
     return render(request, 'create_user_app/create_user_home.html', context)
 
-def nameSplit(fullname):
+def name_split(fullname):
     try:
         primeiro_nome, sobrenome = fullname.split(" ", 1)
     except:
@@ -30,11 +30,11 @@ def normalize(fullname):
     name_normalize = nome_sem_acento.title()
     return name_normalize
 
-def returnUo(numeroUo):
+def return_uo(numeroUo):
     unidade = get_object_or_404(Unidade, numeroUo = numeroUo)
     return unidade
 
-def createScript(request):
+def create_script(request):
     dados_script = []
     context = {}
     if request.method == "POST":
@@ -42,8 +42,8 @@ def createScript(request):
         for i in range(countField):
             print(i,countField)
             nome_completo = normalize(request.POST.get('field_nome[{}]'.format(i)))
-            primeiro_nome,sobrenome = nameSplit(nome_completo)
-            objeto_unidade = returnUo(request.POST.get('field_uo[{}]'.format(i)))
+            primeiro_nome,sobrenome = name_split(nome_completo)
+            objeto_unidade = return_uo(request.POST.get('field_uo[{}]'.format(i)))
             data_nao_normalizada = request.POST.get('field_data_contrato[{}]'.format(i))
             email = request.POST.get('field_email[{}]'.format(i))
             uo = objeto_unidade.numeroUo
@@ -63,7 +63,7 @@ def createScript(request):
             estado = "SP"
             licenca = request.POST.get('field_licenca[{}]'.format(i))
             data_contrato = data_nao_normalizada
-            senha = createPassword(nome_completo,request.POST.get('field_uo[{}]'.format(i)))
+            senha = create_password(nome_completo,request.POST.get('field_uo[{}]'.format(i)))
 
             print("___________________________________________________________")
             print("Nome: {}".format(primeiro_nome))
@@ -81,7 +81,7 @@ def createScript(request):
             print("Data do contrato: {}".format(data_contrato))
             print("Senha: {}".format(senha))
     
-            dados_script = returnDataScript(dados_script,primeiro_nome,email,uo,tipo,licenca)
+            dados_script = return_data_script(dados_script,primeiro_nome,email,uo,tipo,licenca)
 
         response = HttpResponse(dados_script, content_type='application/text charset=utf-8')
         response['Content-Disposition'] = 'attachment; filename="script.txt"'
