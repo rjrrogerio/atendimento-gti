@@ -39,7 +39,8 @@ def createScript(request):
 
     if request.method == "POST":
         countField = int(request.POST.get('countField'))
-        for i in range(countField + 1):
+        for i in range(countField):
+            print(i,countField)
             nome_completo = normalize(request.POST.get('field_nome[{}]'.format(i)))
             primeiro_nome,sobrenome = nameSplit(nome_completo)
             objeto_unidade = returnUo(request.POST.get('field_uo[{}]'.format(i)))

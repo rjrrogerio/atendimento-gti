@@ -27,11 +27,11 @@ $(function () {
       .clone()
       .attr('id', 'field_uo-'+x)
       .insertAfter($('[id^=id_field_email]:last'));
-      document.getElementById('countField').value = x
       const innerDiv = document.getElementById('field_uo-'+x).querySelector('#field_uo')
       //const innerDiv = document.getElementById('field_uo-'+x++)
       innerDiv.setAttribute("name","field_uo["+x+"]")
       x++;   
+      document.getElementById('countField').value = x
     }
   });
   $(removeButton).click(function () {
