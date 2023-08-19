@@ -1,10 +1,9 @@
-**Sistema de cadastro**
 
-
+**<h1>Sistema de cadastro de usuário</h1>**
 
 Esse sistema serve para criar scripts PowerShell para criação de funcionários no AD. Toda a aplicação é web e escrita em python juntamente com o framework Django.
 
-**Inicialização**
+**<h2>Inicialização</h2>**
 
 Para inicialização da aplicação, é recomendado a utilização do comando **XXXX** em um ambiente linux:
 
@@ -20,7 +19,7 @@ Para inicialização em modo debug, é necessário alterar a variável localizad
 
 DEBUG = True
 
-**Comandos PowerShell**
+**<h2>Comandos PowerShell</h2>**
 
 **Comandos**
 
@@ -46,7 +45,7 @@ Abaixo teremos uma lista dos comandos que serão utilizados e qual sua finalidad
 ||**Adição em grupos**|
 ||**Proxyaddresses**|
 
-**Sintaxe**
+**<h2>Sintaxe</h2>**
 
-A sintaxe completa para criação de um usuário incluído os grupos é:
+Sintaxe completa para criação de um usuário com os grupos incluídos e atributos inseridos:
 **XXXXXX XXXX**
