@@ -1,8 +1,8 @@
+import unidecode
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from random import randint
-from datetime import datetime
 from .models import Unidade
 
 def createPassword(fullname,unidade):
@@ -24,7 +24,8 @@ def nameSplit(fullname):
 
 def normalize(fullname):
     nome_sem_espaco = fullname.lstrip(" ")
-    name_normalize = nome_sem_espaco.title()
+    nome_sem_acento = unidecode.unidecode(nome_sem_espaco)
+    name_normalize = nome_sem_acento.title()
     return name_normalize
 
 def returnUo(numeroUo):
@@ -38,7 +39,7 @@ def createScript(request):
 
     if request.method == "POST":
         countField = int(request.POST.get('countField'))
-        for i in range(countField):
+        for i in range(countField + 1):
             nome_completo = normalize(request.POST.get('field_nome[{}]'.format(i)))
             primeiro_nome,sobrenome = nameSplit(nome_completo)
             objeto_unidade = returnUo(request.POST.get('field_uo[{}]'.format(i)))

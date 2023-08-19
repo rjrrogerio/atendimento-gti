@@ -18,7 +18,7 @@ class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-cente
   <div class="container-fluid">
     <form action="{% url 'criarScript' %}" method="POST">
       {% csrf_token %}
-    <input class="form-control countField" name="countField" id="countField" type="text" value=1 style="display: nones;" >
+    <input class="form-control countField" name="countField" id="countField" type="text" value=1 style="display: none;" >
     <div class="field_wrapper">
       <div class="row">
         <div class="col-3 m-1">
