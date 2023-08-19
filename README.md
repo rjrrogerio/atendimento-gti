@@ -1,6 +1,6 @@
 **Sistema de cadastro**
 
-![Documentation Status] ![CI][Documentation Status] ![codecov][Documentation Status] ![PyPI version][Documentation Status]
+
 
 Esse sistema serve para criar scripts PowerShell para criação de funcionários no AD. Toda a aplicação é web e escrita em python juntamente com o framework Django.
 
