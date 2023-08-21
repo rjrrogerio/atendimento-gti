@@ -19,7 +19,5 @@ from .views import create_script,create_user
 
 urlpatterns = [
     path('criausuario',create_user, name='criausuario'),
-    path('criarScript',create_script, name='criarScript'),
-
-    
+    path('criarScript',create_script, name='criarScript'),    
 ]
