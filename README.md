@@ -25,25 +25,35 @@ DEBUG = True
 
 Abaixo teremos uma lista dos comandos que serão utilizados e qual sua finalidade
 
-|**Comando**|**Descrição**|
+|**Comando**|**Função do comando**|
 | :- | :- |
-||**Nome**|
-||**Sobrenome**|
+|**-Name**|**Nome Completo/Nome para exibição**|
+|**-GivenName** |**Nome**|
+|**-Surname**|**Sobrenome**|
 ||**Nome de logon do usuário**|
 ||**Nome de logon do usuário (anterior ao Windows2000)**|
-||**Nome Completo/Nome para exibição**|
-||**Escritório**|
-||**Email**|
-||**Senha**|
-||**Alterar a senha no logo**|
-||**Vencimento da conta**|
-||**Departamento**|
-||**Empresa**|
-||**Cidade**|
-||**Estado**|
-||**Local do objeto canônico**|
+|**Description**|**Descrição**|
+|**-Office**|**Escritório**|
+|**-EmailAddress**|**Email**|
+|**AccountPassword**|**Senha**|
+|**-ChangePasswordAtLogon $true**|**Alterar a senha no logon**|
+|**-AccountExpirationDate**|**Vencimento da conta**|
+|**-Department**|**Departamento**|
+|**-Company**|**Empresa**|
+|**-City**|**Cidade**|
+|**-State**|**Estado**|
+|**-Path**|**Local do objeto canônico**|
 ||**Adição em grupos**|
-||**Proxyaddresses**|
+
+
+**Adicionar ProxyAddresses**
+Só é possível a adição de proxy após a criação do usuário no AD
+Add-ADGroupMember -Identity nome_do_grupo -Members email1, email2
+
+**Adicionar grupos**
+Só é possível a adição de grupos após a criação do usuário no AD
+Set-ADUser email -add @{ProxyAddresses="smtp:email@sede.sescsp.org.br,SMTP:email@sescsp.org.br" -split ","}
+
 
 **<h2>Sintaxe</h2>**
 
