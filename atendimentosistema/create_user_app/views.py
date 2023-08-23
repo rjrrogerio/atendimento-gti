@@ -27,18 +27,18 @@ def create_script(request):
             email = nome_logon+"@sescsp.org.br"
             numero_uo = objeto_unidade.numeroUo
             descricao = objeto_unidade.nomeUo
-            grupos = objeto_unidade.grupoUo
+            grupos = objeto_unidade.grupoUo.split(',')
             tipo = request.POST.get('field_tipo[{}]'.format(i))
             if tipo != 'funcionario':
                 descricao = descricao +" - "+ tipo
             if objeto_unidade.local == 'sede':
-                grupos_gerais = 'sede'
+                grupos_gerais = ["Grupo Geral Sede SescSP"]
                 sede_ou_unidade = 'SEDE'
             elif objeto_unidade.local == 'capital':
-                grupos_gerais = 'capital'
+                grupos_gerais = ["Grupo Geral Unidades SescSP","Grupo Geral Unidades da Capital SescSP"]
                 sede_ou_unidade = 'UNIDADES'
             else:
-                grupos_gerais = 'interior'
+                grupos_gerais = ["Grupo Geral Unidades SescSP","Grupo Geral Unidades do Interior SescSP"]
                 sede_ou_unidade = 'UNIDADES'
             nome_uo_ad = objeto_unidade.nomeUOnoAD
             nome_uo = objeto_unidade.nomeUo

@@ -30,6 +30,7 @@ def return_data_script(dados_script,primeiro_nome,sobrenome,nome_completo,nome_l
     """
     Returna os dados passados como argumento em forma de lista e ordenado para utilização no powershell para criação de um usuário no AD.
     """
+
     dados_script.append('New-ADUser -Name "{nome_completo}" -GivenName "{primeiro_nome}" -Surname "{sobrenome}" -SamAccountName "{nome_logon}" -UserPrincipalName "{nome_logon}" -EmailAddress "{email}" -Description "{descricao}" -Office "{escritorio}" -Department "{nome_uo}" -City "{cidade_uo}" -State "{estado_uo}" -AccountPassword (ConvertTo-SecureString -AsPlainText “{senha}” -Force) -ChangePasswordAtLogon $True -Path "OU=Usuarios,OU={nome_uo_ad},OU={sede_ou_unidade},DC=sescsp,DC=local" -Enabled $True;\n'.format(
         primeiro_nome=primeiro_nome,
         sobrenome=sobrenome,
@@ -51,6 +52,13 @@ def return_data_script(dados_script,primeiro_nome,sobrenome,nome_completo,nome_l
         nome_uo_ad=nome_uo_ad,
         sede_ou_unidade=sede_ou_unidade
     ))
+    
+    dados_script.append('Set-ADUser '+nome_logon+' -add @{ProxyAddresses="smtp:'+nome_logon+'@sede.sescsp.org.br,SMTP:'+nome_logon+'@sescsp.org.br" -split ","};\n')
+    for grupo in grupos:
+        dados_script.append('Add-ADGroupMember -Identity {grupo} -Members {nome_logon};\n'.format(grupo=grupo,nome_logon=nome_logon))
+    for grupo in grupos_gerais:
+        dados_script.append('Add-DistributionGroupMember -Identity {grupo} -Members {nome_logon};\n'.format(grupo=grupo,nome_logon=nome_logon))
+
     return dados_script
 
 

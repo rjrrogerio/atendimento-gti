@@ -50,13 +50,13 @@ Abaixo teremos uma lista dos comandos que serão utilizados e qual sua finalidad
 
 Só é possível a adição de proxy após a criação do usuário no AD
 
-Add-ADGroupMember -Identity nome_do_grupo -Members email1, email2
+Set-ADUser email -add @{ProxyAddresses="smtp:email@sede.sescsp.org.br,SMTP:email@sescsp.org.br" -split ","}
 
 **Adicionar grupos**
 
 Só é possível a adição de grupos após a criação do usuário no AD
 
-Set-ADUser email -add @{ProxyAddresses="smtp:email@sede.sescsp.org.br,SMTP:email@sescsp.org.br" -split ","}
+Add-ADGroupMember -Identity nome_do_grupo -Members email1, email2
 
 
 **<h2>Sintaxe</h2>**
