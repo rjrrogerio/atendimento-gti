@@ -32,10 +32,10 @@ Abaixo teremos uma lista dos comandos que serão utilizados e qual sua finalidad
 |**-Surname**|**Sobrenome**|
 ||**Nome de logon do usuário**|
 ||**Nome de logon do usuário (anterior ao Windows2000)**|
-|**Description**|**Descrição**|
+|**-Description**|**Descrição**|
 |**-Office**|**Escritório**|
 |**-EmailAddress**|**Email**|
-|**AccountPassword**|**Senha**|
+|**-AccountPassword**|**Senha**|
 |**-ChangePasswordAtLogon $true**|**Alterar a senha no logon**|
 |**-AccountExpirationDate**|**Vencimento da conta**|
 |**-Department**|**Departamento**|
@@ -47,11 +47,15 @@ Abaixo teremos uma lista dos comandos que serão utilizados e qual sua finalidad
 
 
 **Adicionar ProxyAddresses**
+
 Só é possível a adição de proxy após a criação do usuário no AD
+
 Add-ADGroupMember -Identity nome_do_grupo -Members email1, email2
 
 **Adicionar grupos**
+
 Só é possível a adição de grupos após a criação do usuário no AD
+
 Set-ADUser email -add @{ProxyAddresses="smtp:email@sede.sescsp.org.br,SMTP:email@sescsp.org.br" -split ","}
 
 
