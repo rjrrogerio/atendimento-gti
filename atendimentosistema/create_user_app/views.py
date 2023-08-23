@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
-from .utils.cria_script import return_data_script,normalize,create_password,name_split,print_data
+from .utils.cria_script import return_data_script,normalize,create_password,name_split
 from .models import Unidade
 
 def return_uo(numeroUo):
@@ -19,34 +19,39 @@ def create_script(request):
     if request.method == "POST":
         countField = int(request.POST.get('countField'))
         for i in range(countField):
-            print(i,countField)
             nome_completo = normalize(request.POST.get('field_nome[{}]'.format(i)))
             primeiro_nome,sobrenome = name_split(nome_completo)
             objeto_unidade = return_uo(request.POST.get('field_uo[{}]'.format(i)))
             data_nao_normalizada = request.POST.get('field_data_contrato[{}]'.format(i))
-            email = request.POST.get('field_email[{}]'.format(i))
-            uo = objeto_unidade.numeroUo
+            nome_logon = request.POST.get('field_email[{}]'.format(i))
+            email = nome_logon+"@sescsp.org.br"
+            numero_uo = objeto_unidade.numeroUo
             descricao = objeto_unidade.nomeUo
             grupos = objeto_unidade.grupoUo
             tipo = request.POST.get('field_tipo[{}]'.format(i))
             if tipo != 'funcionario':
-                descricao = descricao +" "+ tipo
+                descricao = descricao +" - "+ tipo
             if objeto_unidade.local == 'sede':
                 grupos_gerais = 'sede'
+                sede_ou_unidade = 'SEDE'
             elif objeto_unidade.local == 'capital':
                 grupos_gerais = 'capital'
+                sede_ou_unidade = 'UNIDADES'
             else:
                 grupos_gerais = 'interior'
-
+                sede_ou_unidade = 'UNIDADES'
+            nome_uo_ad = objeto_unidade.nomeUOnoAD
+            nome_uo = objeto_unidade.nomeUo
             escritorio = "SESC " + objeto_unidade.nomeUo
-            estado = "SP"
+            cidade_uo = objeto_unidade.cidadeUo
+            estado_uo = objeto_unidade.estado
             licenca = request.POST.get('field_licenca[{}]'.format(i))
             data_contrato = data_nao_normalizada
             senha = create_password(nome_completo,request.POST.get('field_uo[{}]'.format(i)))
     
-            dados_script = return_data_script(dados_script,nome_completo,email,uo,tipo,licenca)
-            print_data(primeiro_nome,sobrenome,nome_completo,email,uo,descricao,grupos,grupos_gerais,tipo,escritorio,estado,licenca,data_contrato,senha)
+            dados_script = return_data_script(dados_script,primeiro_nome,sobrenome,nome_completo,nome_logon,email,numero_uo,nome_uo,descricao,grupos,grupos_gerais,tipo,escritorio,cidade_uo,estado_uo,sede_ou_unidade,licenca,nome_uo_ad,data_contrato,senha)
 
+        
         response = HttpResponse(dados_script, content_type='application/text charset=utf-8')
         response['Content-Disposition'] = 'attachment; filename="script.txt"'
         return response
