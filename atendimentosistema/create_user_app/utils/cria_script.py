@@ -25,13 +25,33 @@ def normalize(fullname):
     nome_normalizado = nome_sem_acento.title()
     return nome_normalizado
 
+def return_license(licenca,tipo):
+    if licenca == 'lica1':
+        tipo_de_licenca = 'LIC-A1-'
+    else:
+        tipo_de_licenca = 'LIC-A3-'
+
+    if tipo =='funcionario':
+        tipo_de_licenca +='SESCSP-SG;' 
+
+    elif tipo =='estagiario':
+        tipo_de_licenca +='ESTAGIARIOS_SG;' 
+    
+    elif tipo =='temporario' or tipo=='pj':
+        tipo_de_licenca +='TEMPORARIOS_SG'
+    else:
+        tipo_de_licenca +='APRENDIZES_SG;'
+    return tipo_de_licenca
 
 def return_data_script(dados_script,primeiro_nome,sobrenome,nome_completo,nome_logon,email,numero_uo,nome_uo,descricao,grupos,grupos_gerais,tipo,escritorio,cidade_uo,estado_uo,sede_ou_unidade,licenca,nome_uo_ad,data_contrato,senha):
     """
     Returna os dados passados como argumento em forma de lista e ordenado para utilização no powershell para criação de um usuário no AD.
     """
 
-    dados_script.append('New-ADUser -Name "{nome_completo}" -GivenName "{primeiro_nome}" -Surname "{sobrenome}" -SamAccountName "{nome_logon}" -UserPrincipalName "{nome_logon}" -EmailAddress "{email}" -Description "{descricao}" -Office "{escritorio}" -Department "{nome_uo}" -City "{cidade_uo}" -State "{estado_uo}" -AccountPassword (ConvertTo-SecureString -AsPlainText “{senha}” -Force) -ChangePasswordAtLogon $True -Path "OU=Usuarios,OU={nome_uo_ad},OU={sede_ou_unidade},DC=sescsp,DC=local" -Enabled $True;\n'.format(
+    tipo_de_licenca = return_license(licenca,tipo)
+    print(data_contrato)
+
+    dados_script.append('New-ADUser -Name "{nome_completo}" -GivenName "{primeiro_nome}" -Surname "{sobrenome}" -SamAccountName "{nome_logon}" -UserPrincipalName "{nome_logon}@sescsp.org.br" -EmailAddress "{email}" -Description "{descricao}" -Office "{escritorio}" -Department "{nome_uo}" -City "{cidade_uo}" -State "{estado_uo}" -AccountPassword (ConvertTo-SecureString -AsPlainText “{senha}” -Force) -ChangePasswordAtLogon $True -Path "OU=Usuarios,OU={nome_uo_ad},OU={sede_ou_unidade},DC=sescsp,DC=local" -Enabled $True;\n'.format(
         primeiro_nome=primeiro_nome,
         sobrenome=sobrenome,
         nome_completo=nome_completo,
@@ -55,9 +75,11 @@ def return_data_script(dados_script,primeiro_nome,sobrenome,nome_completo,nome_l
     
     dados_script.append('Set-ADUser '+nome_logon+' -add @{ProxyAddresses="smtp:'+nome_logon+'@sede.sescsp.org.br,SMTP:'+nome_logon+'@sescsp.org.br" -split ","};\n')
     for grupo in grupos:
-        dados_script.append('Add-ADGroupMember -Identity {grupo} -Members {nome_logon};\n'.format(grupo=grupo,nome_logon=nome_logon))
+        dados_script.append('Add-ADGroupMember -Identity "{grupo}" -Members {nome_logon};\n'.format(grupo=grupo,nome_logon=nome_logon))
     for grupo in grupos_gerais:
-        dados_script.append('Add-DistributionGroupMember -Identity {grupo} -Members {nome_logon};\n'.format(grupo=grupo,nome_logon=nome_logon))
+        dados_script.append('Add-DistributionGroupMember -Identity "{grupo}" -Members {nome_logon};\n'.format(grupo=grupo,nome_logon=nome_logon))
+    dados_script.append('Add-ADGroupMember -Identity "{tipo_de_licenca}" -Members {nome_logon};\n'.format(tipo_de_licenca=tipo_de_licenca,nome_logon=nome_logon))
+    print(tipo_de_licenca)
 
     return dados_script
 
