@@ -56,10 +56,9 @@ def create_script(request):
             senha = create_password(nome_completo,request.POST.get('field_uo[{}]'.format(i)))
     
             dados_script = return_data_script(dados_script,primeiro_nome,sobrenome,nome_completo,nome_logon,email,numero_uo,nome_uo,descricao,grupos,grupos_gerais,tipo,escritorio,cidade_uo,estado_uo,sede_ou_unidade,licenca,nome_uo_ad,data_contrato,senha)
-
-        
+            
         response = HttpResponse(dados_script, content_type='application/text charset=utf-8')
         response['Content-Disposition'] = 'attachment; filename="script.txt"'
         return response
 
-    return render(request, 'create_user_app/create_user_home_test.html', context)
+    return render(request, 'create_user_app/create_user_home.html', context)
