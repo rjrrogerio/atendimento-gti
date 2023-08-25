@@ -1,25 +1,28 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
-from .utils.cria_script import return_data_script,normalize,create_password,name_split
+from .utils.cria_script import return_data_script,normalize_name,create_password,name_split
 from .models import Unidade
 
 def return_uo(numeroUo):
+
     unidade = get_object_or_404(Unidade, numeroUo = numeroUo)
     return unidade
 
 def create_user(request):
+
     query_unidade = list(Unidade.objects.values('nomeUo','numeroUo'))
     context = {'query_unidade': query_unidade}
     return render(request, 'create_user_app/create_user_home.html', context)
 
 def create_script(request):
+    
     dados_script = []
     context = {}
     if request.method == "POST":
         countField = int(request.POST.get('countField'))
         for i in range(countField):
-            nome_completo = normalize(request.POST.get('field_nome[{}]'.format(i)))
+            nome_completo = normalize_name(request.POST.get('field_nome[{}]'.format(i)))
             primeiro_nome,sobrenome = name_split(nome_completo)
             objeto_unidade = return_uo(request.POST.get('field_uo[{}]'.format(i)))
             data_nao_normalizada = request.POST.get('field_data_contrato[{}]'.format(i))
@@ -27,7 +30,10 @@ def create_script(request):
             email = nome_logon+"@sescsp.org.br"
             numero_uo = objeto_unidade.numeroUo
             descricao = objeto_unidade.nomeUo
-            grupos = objeto_unidade.grupoUo.split(',')
+            try:
+                grupos = objeto_unidade.grupoUo.split(',')
+            except:
+                grupos = objeto_unidade.grupoUo    
             tipo = request.POST.get('field_tipo[{}]'.format(i))
             if tipo != 'funcionario':
                 descricao = descricao +" - "+ tipo

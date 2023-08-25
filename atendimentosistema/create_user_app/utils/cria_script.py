@@ -1,31 +1,44 @@
 import unidecode
+import datetime
 from random import randint
 
 def create_password(fullname,unidade):
     """
     Returna um conjunto de caracteres utilizando o padrão: "3NúmerosAleatórios_LetrasIniciaisDoNome#NúmeroDaUO"
     """
+
     iniciais_do_nome = "".join([ letra[0] for letra in fullname.split()])
     senha = str(randint(100,999)) +"_"+ iniciais_do_nome.title() +"#"+ unidade
     return senha
 
 def name_split(fullname):
+
     try:
         primeiro_nome, sobrenome = fullname.split(" ", 1)
     except:
         primeiro_nome, sobrenome = fullname,""
     return primeiro_nome, sobrenome
 
-def normalize(fullname):
+def normalize_name(fullname):
     """
     Returna o nome sem acentos e com as inicias de nome e sobrenome maiúsculo.
     """
+
     nome_sem_espaco = fullname.lstrip(" ")
     nome_sem_acento = unidecode.unidecode(nome_sem_espaco)
     nome_normalizado = nome_sem_acento.title()
     return nome_normalizado
 
-def return_license(licenca,tipo):
+def normalize_date(data):
+
+    try:
+        data_normalizada = datetime.datetime.strptime(data, "%Y-%m-%d").strftime("%d/%m/%Y")
+    except:
+        data_normalizada = None
+    return data_normalizada
+
+def get_license(licenca,tipo):
+
     if licenca == 'lica1':
         tipo_de_licenca = 'LIC-A1-'
     else:
@@ -33,10 +46,8 @@ def return_license(licenca,tipo):
 
     if tipo =='funcionario':
         tipo_de_licenca +='SESCSP-SG;' 
-
     elif tipo =='estagiario':
         tipo_de_licenca +='ESTAGIARIOS_SG;' 
-    
     elif tipo =='temporario' or tipo=='pj':
         tipo_de_licenca +='TEMPORARIOS_SG'
     else:
@@ -48,8 +59,8 @@ def return_data_script(dados_script,primeiro_nome,sobrenome,nome_completo,nome_l
     Returna os dados passados como argumento em forma de lista e ordenado para utilização no powershell para criação de um usuário no AD.
     """
 
-    tipo_de_licenca = return_license(licenca,tipo)
-    print(data_contrato)
+    tipo_de_licenca = get_license(licenca,tipo)
+    data_contrato_normalizada = normalize_date(data_contrato)
 
     dados_script.append('New-ADUser -Name "{nome_completo}" -GivenName "{primeiro_nome}" -Surname "{sobrenome}" -SamAccountName "{nome_logon}" -UserPrincipalName "{nome_logon}@sescsp.org.br" -EmailAddress "{email}" -Description "{descricao}" -Office "{escritorio}" -Department "{nome_uo}" -City "{cidade_uo}" -State "{estado_uo}" -AccountPassword (ConvertTo-SecureString -AsPlainText “{senha}” -Force) -ChangePasswordAtLogon $True -Path "OU=Usuarios,OU={nome_uo_ad},OU={sede_ou_unidade},DC=sescsp,DC=local" -Enabled $True;\n'.format(
         primeiro_nome=primeiro_nome,
@@ -67,25 +78,21 @@ def return_data_script(dados_script,primeiro_nome,sobrenome,nome_completo,nome_l
         estado_uo=estado_uo,
         cidade_uo=cidade_uo,
         licenca=licenca,
-        data_contrato=data_contrato,
+        data_contrato_normalizada=data_contrato_normalizada,
         senha=senha,
         nome_uo_ad=nome_uo_ad,
         sede_ou_unidade=sede_ou_unidade
     ))
     
     dados_script.append('Set-ADUser '+nome_logon+' -add @{ProxyAddresses="smtp:'+nome_logon+'@sede.sescsp.org.br,SMTP:'+nome_logon+'@sescsp.org.br" -split ","};\n')
-    for grupo in grupos:
-        dados_script.append('Add-ADGroupMember -Identity "{grupo}" -Members {nome_logon};\n'.format(grupo=grupo,nome_logon=nome_logon))
+    if grupos:
+        for grupo in grupos:
+            dados_script.append('Add-ADGroupMember -Identity "{grupo}" -Members {nome_logon};\n'.format(grupo=grupo,nome_logon=nome_logon))
     for grupo in grupos_gerais:
         dados_script.append('Add-DistributionGroupMember -Identity "{grupo}" -Members {nome_logon};\n'.format(grupo=grupo,nome_logon=nome_logon))
     dados_script.append('Add-ADGroupMember -Identity "{tipo_de_licenca}" -Members {nome_logon};\n'.format(tipo_de_licenca=tipo_de_licenca,nome_logon=nome_logon))
-    print(tipo_de_licenca)
+    
+    if tipo != 'funcionario' and data_contrato_normalizada is not None:
+        dados_script.append('Set-ADAccountExpiration -Identity {nome_logon} -DateTime "{data_contrato_normalizada}";\n'.format(nome_logon=nome_logon,data_contrato_normalizada=data_contrato_normalizada))
 
     return dados_script
-
-
-def return_data_text():
-    """
-    Returna os dados passados como argumento em forma de lista e ordenado para utilização de senha e nome de funcionários criados.
-    """
-    pass
