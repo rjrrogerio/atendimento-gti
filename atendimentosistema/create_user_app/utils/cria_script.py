@@ -54,11 +54,11 @@ def get_license(licenca,tipo):
         tipo_de_licenca +='APRENDIZES_SG;'
     return tipo_de_licenca
 
-def return_data_script(dados_script,primeiro_nome,sobrenome,nome_completo,nome_logon,email,numero_uo,nome_uo,descricao,grupos,grupos_gerais,tipo,escritorio,cidade_uo,estado_uo,sede_ou_unidade,licenca,nome_uo_ad,data_contrato,senha):
+def return_data_script(dados_script,dados_funcionario,primeiro_nome,sobrenome,nome_completo,nome_logon,email,numero_uo,nome_uo,descricao,grupos,grupos_gerais,tipo,escritorio,cidade_uo,estado_uo,sede_ou_unidade,licenca,nome_uo_ad,data_contrato,senha):
     """
     Returna os dados passados como argumento em forma de lista e ordenado para utilização no powershell para criação de um usuário no AD.
     """
-
+    dados_funcionario.append('Usuário: {} - Senha: {} - UO: {}'.format(nome_logon,senha,nome_uo))
     tipo_de_licenca = get_license(licenca,tipo)
     data_contrato_normalizada = normalize_date(data_contrato)
 
@@ -95,4 +95,4 @@ def return_data_script(dados_script,primeiro_nome,sobrenome,nome_completo,nome_l
     if tipo != 'funcionario' and data_contrato_normalizada is not None:
         dados_script.append('Set-ADAccountExpiration -Identity {nome_logon} -DateTime "{data_contrato_normalizada}";\n'.format(nome_logon=nome_logon,data_contrato_normalizada=data_contrato_normalizada))
 
-    return dados_script
+    return dados_script,dados_funcionario

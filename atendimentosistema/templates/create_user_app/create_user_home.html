@@ -6,18 +6,18 @@
 
 
 <div
-class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
   <h1 class="h2">Criar usuário Active Directory</h1>
   <div class="btn-toolbar mb-2 mb-md-0">
     <div class="btn-group mt-3 me-2">
       <a href="{% url 'home' %}"><button type="button"
-        class="btn btn-primary">Voltar</button></a>
-      </div>
+          class="btn btn-primary">Voltar</button></a>
     </div>
   </div>
-  <div class="container-fluid">
-    <form action="{% url 'criarScript' %}" method="POST">
-      {% csrf_token %}
+</div>
+<div class="container-fluid">
+  <form action="{% url 'criarScript' %}" method="POST">
+    {% csrf_token %}
     <input class="form-control countField" name="countField" id="countField" type="text" value=1 style="display: none;" >
     <div class="field_wrapper">
       <div class="row">
@@ -74,10 +74,25 @@ class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-cente
         <a href="javascript:void(0);"
           class="add_button btn btn-primary"
           title="Add field">Adicionar linha</a>
+        <a href="javascript:void(0);"
+          class="create_script btn btn-primary"
+          title="Add script">teste</a>
         <button id="btnOc" type="submit"
-          class="btn btn-dark">Criar script 
+          class="create_script_django btn btn-dark">Criar script 
           ps1</button>
       </div>
+    </div>
+    <div class="row">
+      {% if messages %}
+        <div class="alert alert-success" role="alert">
+          <ul class="messages">
+            <button type="button" class="btn-close float-end" data-bs-dismiss="alert" aria-label="Close"></button>
+            {% for message in messages %}
+              <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
     </div>
   </form>
 </div>

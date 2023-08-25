@@ -15,6 +15,7 @@ $(function () {
   var maxField = 20; //Input fields increment limitation
   var addButton = $('.add_button');
   var removeButton = $('.remove_button');
+  var createScript = $('.create_script');
   var wrapper = $('.field_wrapper');
   var x = 1; //Initial field counter is 1
   //when add button is clicked
@@ -44,6 +45,12 @@ $(function () {
       element.parentNode.removeChild(element);
     });
   });
+  $(createScript).click(function () {
+    $(".create_script_django").click();
+    setTimeout(function () {
+      window.location.reload(1);
+    }, 1000);
+    });
 });
 
 
