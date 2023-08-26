@@ -7,7 +7,7 @@ Esse sistema serve para criar scripts PowerShell para criação de funcionários
 
 Para inicialização da aplicação, é recomendado a utilização do comando **XXXX** em um ambiente linux:
 
-python manage.py **XXXX**
+python manage.py **gunicorn --bind 0.0.0.0:8000 atendimentosistema.wsgi:application**
 
 Embora isso seja somente uma recomendação! Você também pode inicializar com outro WSGI e em outro sistema operacional ou utilizar o runserver para rodar em ambiente local. 
 
