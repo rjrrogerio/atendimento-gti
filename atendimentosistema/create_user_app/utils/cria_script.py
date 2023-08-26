@@ -1,11 +1,10 @@
 import unidecode
 import datetime
+from django.shortcuts import get_object_or_404
 from random import randint
+from ..models import Unidade
 
 def create_password(fullname,unidade):
-    """
-    Returna um conjunto de caracteres utilizando o padrão: "3NúmerosAleatórios_LetrasIniciaisDoNome#NúmeroDaUO"
-    """
 
     iniciais_do_nome = "".join([ letra[0] for letra in fullname.split()])
     senha = str(randint(100,999)) +"_"+ iniciais_do_nome.title() +"#"+ unidade
@@ -20,14 +19,16 @@ def name_split(fullname):
     return primeiro_nome, sobrenome
 
 def normalize_name(fullname):
-    """
-    Returna o nome sem acentos e com as inicias de nome e sobrenome maiúsculo.
-    """
 
     nome_sem_espaco = fullname.lstrip(" ")
     nome_sem_acento = unidecode.unidecode(nome_sem_espaco)
     nome_normalizado = nome_sem_acento.title()
     return nome_normalizado
+
+def get_uo(numeroUo):
+
+    unidade = get_object_or_404(Unidade, numeroUo = numeroUo)
+    return unidade
 
 def normalize_date(data):
 
@@ -54,10 +55,12 @@ def get_license(licenca,tipo):
         tipo_de_licenca +='APRENDIZES_SG;'
     return tipo_de_licenca
 
-def return_data_script(dados_script,dados_funcionario,primeiro_nome,sobrenome,nome_completo,nome_logon,email,numero_uo,nome_uo,descricao,grupos,grupos_gerais,tipo,escritorio,cidade_uo,estado_uo,sede_ou_unidade,licenca,nome_uo_ad,data_contrato,senha):
-    """
-    Returna os dados passados como argumento em forma de lista e ordenado para utilização no powershell para criação de um usuário no AD.
-    """
+def get_data_script(dados_script,dados_funcionario,primeiro_nome,
+                       sobrenome,nome_completo,nome_logon,email,numero_uo,
+                       nome_uo,descricao,grupos,grupos_gerais,tipo,escritorio,
+                       cidade_uo,estado_uo,sede_ou_unidade,licenca,
+                       nome_uo_ad,data_contrato,senha):
+    
     dados_funcionario.append('Usuário: {} - Senha: {} - UO: {}'.format(nome_logon,senha,nome_uo))
     tipo_de_licenca = get_license(licenca,tipo)
     data_contrato_normalizada = normalize_date(data_contrato)
@@ -85,7 +88,7 @@ def return_data_script(dados_script,dados_funcionario,primeiro_nome,sobrenome,no
     ))
     
     dados_script.append('Set-ADUser '+nome_logon+' -add @{ProxyAddresses="smtp:'+nome_logon+'@sede.sescsp.org.br,SMTP:'+nome_logon+'@sescsp.org.br" -split ","};\n')
-    if grupos:
+    if grupos is not None:
         for grupo in grupos:
             dados_script.append('Add-ADGroupMember -Identity "{grupo}" -Members {nome_logon};\n'.format(grupo=grupo,nome_logon=nome_logon))
     for grupo in grupos_gerais:

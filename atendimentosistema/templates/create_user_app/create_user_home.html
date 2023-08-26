@@ -16,7 +16,7 @@
   </div>
 </div>
 <div class="container-fluid">
-  <form action="{% url 'criarScript' %}" method="POST">
+  <form action="{% url 'criarscript' %}" method="POST">
     {% csrf_token %}
     <input class="form-control countField" name="countField" id="countField" type="text" value=1 style="display: none;" >
     <div class="field_wrapper">
@@ -75,11 +75,10 @@
           class="add_button btn btn-primary"
           title="Add field">Adicionar linha</a>
         <a href="javascript:void(0);"
-          class="create_script btn btn-primary"
-          title="Add script">teste</a>
+          class="create_script btn btn-dark"
+          title="Add script">Criar script ps1</a>
         <button id="btnOc" type="submit"
-          class="create_script_django btn btn-dark">Criar script 
-          ps1</button>
+          class="create_script_django btn btn-dark" style="display: none;">call_js</button>
       </div>
     </div>
     <div class="row">
