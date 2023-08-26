@@ -20,3 +20,6 @@ class Unidade(models.Model):
 
     def __str__(self):
         return '{} - {}'.format(self.numeroUo, self.nomeUo)
+    class Meta:
+      ordering = ['nomeUo']
+    
