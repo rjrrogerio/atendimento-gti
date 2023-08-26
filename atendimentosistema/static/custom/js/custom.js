@@ -45,12 +45,13 @@ $(function () {
       element.parentNode.removeChild(element);
     });
   });
-  $(createScript).click(function () {
-    $(".create_script_django").click();
-    setTimeout(function () {
-      window.location.reload(1);
-    }, 1000);
-    });
+  
+  $('.myformuser').submit(function(event){
+      setTimeout(function () {
+        window.location.reload(1);
+      }, 1000);
+  });
+  
 });
 
 
