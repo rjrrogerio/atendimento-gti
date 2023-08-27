@@ -16,6 +16,7 @@ def create_script(request):
     
     dados_script = []
     dados_funcionario = []
+    dados_aliases = []
     if request.method == "POST":
         context = {}
         countField = int(request.POST.get('countField'))
@@ -53,8 +54,8 @@ def create_script(request):
             data_contrato = data_nao_normalizada
             senha = create_password(nome_completo,request.POST.get('field_uo[{}]'.format(i)))
     
-            dados_script,dados_funcionario = get_data_script(
-                dados_script, dados_funcionario,primeiro_nome,
+            dados_script,dados_funcionario,dados_aliases = get_data_script(
+                dados_script, dados_funcionario,dados_aliases,primeiro_nome,
                 sobrenome,nome_completo,nome_logon,email,
                 numero_uo,nome_uo,descricao,grupos,grupos_gerais,
                 tipo,escritorio,cidade_uo,estado_uo,sede_ou_unidade,
@@ -64,6 +65,9 @@ def create_script(request):
         response['Content-Disposition'] = 'attachment; filename="script.txt"'
         for dado_funcionario in dados_funcionario:
             messages.success(request, dado_funcionario)
+        for dado_aliases in dados_aliases:
+            messages.info(request,dado_aliases)
+            print(messages.error)
         return response
 
     return render(request, 'create_user_app/create_user_home.html', context)

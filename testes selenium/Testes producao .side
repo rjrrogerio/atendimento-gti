@@ -1,7 +1,7 @@
 {
   "id": "63039d29-3f0c-4997-ae1f-2f96eafe5215",
   "version": "2.0",
-  "name": "Testes local",
+  "name": "Testes producao",
   "url": "http://10.100.1.14:8000",
   "tests": [{
     "id": "bbe7a777-7968-4c9a-b68b-538951582d70",

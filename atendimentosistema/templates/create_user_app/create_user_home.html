@@ -85,9 +85,16 @@
         <div class="alert alert-success" role="alert">
           <ul class="messages">
             <button type="button" class="btn-close float-end" data-bs-dismiss="alert" aria-label="Close"></button>
+            <p>Usuários</p>
             {% for message in messages %}
-              <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+              {% if 'success' in message.tags %}<li>{{ message }}</li>{% endif %}
             {% endfor %}
+            <br>
+            <p>Aliases</p>
+            {% for message in messages %}
+              {% if 'info' in message.tags %}<li>{{ message }}</li>{% endif %}
+            {% endfor %}
+            <br>
           </ul>
         </div>
       {% endif %}
