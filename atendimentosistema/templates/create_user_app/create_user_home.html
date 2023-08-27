@@ -16,7 +16,7 @@
   </div>
 </div>
 <div class="container-fluid">
-  <form action="{% url 'criarscript' %}" method="POST">
+  <form action="{% url 'criarscript' %}" class="myformuser" method="POST">
     {% csrf_token %}
     <input class="form-control countField" name="countField" id="countField" type="text" value=1 style="display: none;" >
     <div class="field_wrapper">
@@ -59,7 +59,7 @@
             <option value="lica3" >LIC-A3</option>
           </select>
         </div>
-        <div class="col-2 m-1" id="datacontrato[0]" style="display: none">
+        <div class="col-2 m-1" id="datacontrato[0]" >
           <input  type="date" id="datacontrato" class="form-control"
             name="field_data_contrato[0]" data-date-format="DD/MM/YYYY"
             placeholder="Data do contrato">
@@ -74,11 +74,10 @@
         <a href="javascript:void(0);"
           class="add_button btn btn-primary"
           title="Add field">Adicionar linha</a>
-        <a href="javascript:void(0);"
-          class="create_script btn btn-dark"
-          title="Add script">Criar script ps1</a>
         <button id="btnOc" type="submit"
-          class="create_script_django btn btn-dark" style="display: none;">call_js</button>
+          class="create_script_django btn btn-dark"
+          title="Add script">Criar script ps1</a>
+        </button>
       </div>
     </div>
     <div class="row">

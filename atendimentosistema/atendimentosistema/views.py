@@ -1,13 +1,12 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from requests import request
-from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from create_user_app.models import Unidade
 
 
-# Create your views here.
 def home(request):
     context = {}
     return render(request, 'index.html', context)
 
-
+def lista_uo(request):
+    unidades = Unidade.objects.all().order_by('nomeUo')
+    return render(request, 'lista_uo.html', {'unidades':unidades})
     

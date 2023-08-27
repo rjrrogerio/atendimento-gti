@@ -62,6 +62,8 @@ def get_data_script(dados_script,dados_funcionario,primeiro_nome,
                        nome_uo_ad,data_contrato,senha):
     
     dados_funcionario.append('Usuário: {} - Senha: {} - UO: {}'.format(nome_logon,senha,nome_uo))
+    dados_funcionario.append('{}:       {}@sede.sescsp.org.br'.format(nome_logon,nome_logon))
+    
     tipo_de_licenca = get_license(licenca,tipo)
     data_contrato_normalizada = normalize_date(data_contrato)
 
