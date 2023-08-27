@@ -1,11 +1,11 @@
 from django.db import models
 
 class Unidade(models.Model):
-    nomeUo = models.CharField(blank=True, null=True,max_length=30)
-    numeroUo = models.CharField(blank=True, null=True,max_length=10)                                   
-    nomeUOnoAD = models.CharField(blank=True, null=True,max_length=100)                                   
+    nomeUo = models.CharField(blank=False, null=False,max_length=30)
+    numeroUo = models.CharField(blank=False, null=False,max_length=10)                                   
+    nomeUOnoAD = models.CharField(blank=False, null=False,max_length=100)                                   
     grupoUo = models.CharField(blank=True, null=True,max_length=500)
-    cidadeUo = models.CharField(blank=True, null=True,max_length=500)
+    cidadeUo = models.CharField(blank=False, null=False,max_length=500,default='São Paulo')
     LOCAL_CHOICES = (
         ('capital','CAPITAL'),
         ('interior', 'INTERIOR'),
