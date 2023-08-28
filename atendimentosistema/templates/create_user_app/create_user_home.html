@@ -62,7 +62,7 @@
         <div class="col-2 m-1" id="datacontrato[0]" >
           <input  type="date" id="datacontrato" class="form-control"
             name="field_data_contrato[0]" data-date-format="DD/MM/YYYY"
-            placeholder="Data do contrato">
+            placeholder="Data do contrato" style="display: none;">
         </div>
       </div>
     </div>
@@ -85,12 +85,12 @@
         <div class="alert alert-success" role="alert">
           <ul class="messages">
             <button type="button" class="btn-close float-end" data-bs-dismiss="alert" aria-label="Close"></button>
-            <p>Usuários</p>
+            <a>Usuários</a>
             {% for message in messages %}
               {% if 'success' in message.tags %}<li>{{ message }}</li>{% endif %}
             {% endfor %}
             <br>
-            <p>Aliases</p>
+            <a>Aliases</a>
             {% for message in messages %}
               {% if 'info' in message.tags %}<li>{{ message }}</li>{% endif %}
             {% endfor %}
