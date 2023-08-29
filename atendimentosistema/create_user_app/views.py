@@ -67,7 +67,6 @@ def create_script(request):
             messages.success(request, dado_funcionario)
         for dado_aliases in dados_aliases:
             messages.info(request,dado_aliases)
-            print(messages.error)
         return response
 
     return render(request, 'create_user_app/create_user_home.html', context)
