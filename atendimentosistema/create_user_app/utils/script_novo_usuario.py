@@ -45,14 +45,16 @@ def get_license(licenca,tipo):
     else:
         tipo_de_licenca = 'LIC-A3-'
 
-    if tipo =='funcionario':
-        tipo_de_licenca +='SESCSP-SG;' 
+    if licenca == 'lica1' and tipo =='funcionario':
+        tipo_de_licenca +='SESCSP-SG' 
+    elif tipo =='funcionario':
+        tipo_de_licenca +='SESCSP_SG' 
     elif tipo =='estagiario':
-        tipo_de_licenca +='ESTAGIARIOS_SG;' 
+        tipo_de_licenca +='ESTAGIARIOS_SG' 
     elif tipo =='temporario' or tipo=='pj':
         tipo_de_licenca +='TEMPORARIOS_SG'
     else:
-        tipo_de_licenca +='APRENDIZES_SG;'
+        tipo_de_licenca +='APRENDIZES_SG'
     return tipo_de_licenca
 
 def get_data_script(dados_script,dados_funcionario,dados_aliases,primeiro_nome,
@@ -67,7 +69,7 @@ def get_data_script(dados_script,dados_funcionario,dados_aliases,primeiro_nome,
     tipo_de_licenca = get_license(licenca,tipo)
     data_contrato_normalizada = normalize_date(data_contrato)
 
-    dados_script.append('if (!(Get-aduser -filter {{samaccountname -eq "{nome_logon}"}})) {{\nNew-ADUser -Name "{nome_completo}" -GivenName "{primeiro_nome}" -Surname "{sobrenome}" -SamAccountName "{nome_logon}" -UserPrincipalName "{nome_logon}@sescsp.org.br" -EmailAddress "{email}" -Description "{descricao}" -Office "{escritorio}" -Department "{nome_uo}" -City "{cidade_uo}" -State "{estado_uo}" -AccountPassword (ConvertTo-SecureString -AsPlainText “{senha}” -Force) -ChangePasswordAtLogon $True -Path "OU=Usuarios,OU={nome_uo_ad},OU={sede_ou_unidade},DC=sescsp,DC=local" -Enabled $True;\n'.format(
+    dados_script.append('if (!(Get-aduser -filter {{samaccountname -eq "{nome_logon}"}})) {{\nNew-ADUser -Name "{nome_completo}" -GivenName "{primeiro_nome}" -Surname "{sobrenome}" -SamAccountName "{nome_logon}" -DisplayName "{nome_completo}" -Company "SESCSP" -UserPrincipalName "{nome_logon}@sescsp.org.br" -EmailAddress "{email}" -Description "{descricao}" -Office "{escritorio}" -Department "{nome_uo}" -City "{cidade_uo}" -State "{estado_uo}" -AccountPassword (ConvertTo-SecureString -AsPlainText “{senha}” -Force) -ChangePasswordAtLogon $True -Path "OU=Usuarios,OU={nome_uo_ad},OU={sede_ou_unidade},DC=sescsp,DC=local" -Enabled $True;\n'.format(
         primeiro_nome=primeiro_nome,
         sobrenome=sobrenome,
         nome_completo=nome_completo,
@@ -93,15 +95,13 @@ def get_data_script(dados_script,dados_funcionario,dados_aliases,primeiro_nome,
     if grupos is not None:
         for grupo in grupos:
             dados_script.append('Add-ADGroupMember -Identity "{grupo}" -Members {nome_logon};\n'.format(grupo=grupo,nome_logon=nome_logon))
-    for grupo in grupos_gerais:
-        dados_script.append('Add-DistributionGroupMember -Identity "{grupo}" -Members {nome_logon};\n'.format(grupo=grupo,nome_logon=nome_logon))
+    '''for grupo in grupos_gerais:
+        dados_script.append('Add-DistributionGroupMember -Identity "{grupo}" -Members {nome_logon};\n'.format(grupo=grupo,nome_logon=nome_logon))'''
 
     dados_script.append('Add-ADGroupMember -Identity "{tipo_de_licenca}" -Members {nome_logon};\n'.format(tipo_de_licenca=tipo_de_licenca,nome_logon=nome_logon))
 
     if tipo != 'funcionario' and data_contrato_normalizada is not None:
-        dados_script.append('Set-ADAccountExpiration -Identity {nome_logon} -DateTime "{data_contrato_normalizada}";\n'.format(nome_logon=nome_logon,data_contrato_normalizada=data_contrato_normalizada))
-
-    
+        dados_script.append('Get-ADUser -Identity {nome_logon} | Set-AdUser -AccountExpirationDate "{data_contrato_normalizada}";\n'.format(nome_logon=nome_logon,data_contrato_normalizada=data_contrato_normalizada))
     dados_script.append("}} else {{ write-host 'Usuário {nome_logon} já existe'}};\n".format(nome_logon=nome_logon))
 
     return dados_script,dados_funcionario,dados_aliases

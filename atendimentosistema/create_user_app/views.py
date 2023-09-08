@@ -1,11 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib import messages
-from .utils.cria_script import get_data_script
-from .utils.cria_script import normalize_name
-from .utils.cria_script import create_password
-from .utils.cria_script import get_uo
-from .utils.cria_script import name_split
+from .utils.script_novo_usuario import get_data_script
+from .utils.script_novo_usuario import normalize_name
+from .utils.script_novo_usuario import create_password
+from .utils.script_novo_usuario import get_uo
+from .utils.script_novo_usuario import name_split
 
 
 from .models import Unidade

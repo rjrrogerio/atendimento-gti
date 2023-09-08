@@ -1,11 +1,11 @@
 import unittest
 import re
-from create_user_app.utils.cria_script import name_split
-from create_user_app.utils.cria_script import normalize_name
-from create_user_app.utils.cria_script import normalize_date
-from create_user_app.utils.cria_script import get_license
-from create_user_app.utils.cria_script import create_password
-from create_user_app.utils.cria_script import get_data_script
+from create_user_app.utils.script_novo_usuario import name_split
+from create_user_app.utils.script_novo_usuario import normalize_name
+from create_user_app.utils.script_novo_usuario import normalize_date
+from create_user_app.utils.script_novo_usuario import get_license
+from create_user_app.utils.script_novo_usuario import create_password
+from create_user_app.utils.script_novo_usuario import get_data_script
 
 class TestCreateUserAD(unittest.TestCase):
 
@@ -94,10 +94,10 @@ class TestCreateUserAD(unittest.TestCase):
 
     def test_get_license(self):
         test_cases = [
-            ('lica1', 'funcionario', 'LIC-A1-SESCSP-SG;'),
-            ('lica2', 'estagiario', 'LIC-A3-ESTAGIARIOS_SG;'),
+            ('lica1', 'funcionario', 'LIC-A1-SESCSP-SG'),
+            ('lica2', 'estagiario', 'LIC-A3-ESTAGIARIOS_SG'),
             ('lica3', 'temporario', 'LIC-A3-TEMPORARIOS_SG'),
-            ('lica4', 'outro', 'LIC-A3-APRENDIZES_SG;'),
+            ('lica4', 'outro', 'LIC-A3-APRENDIZES_SG'),
         ]
         
         for licenca, tipo, expected_license in test_cases:
@@ -136,7 +136,7 @@ class TestCreateUserAD(unittest.TestCase):
             licenca, nome_uo_ad, data_contrato, senha
         )
 
-        assert len(dados_script) == 7
+        assert len(dados_script) == 6
         assert len(dados_funcionario) == 1
         assert len(dados_aliases) == 1
         assert nome_logon in dados_script[0]
