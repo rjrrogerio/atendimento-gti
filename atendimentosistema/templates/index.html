@@ -15,7 +15,7 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Cadastro de usuário AD</h5>
-                    <p class="card-text">Sistema de script para criação de usuário AD</p>
+                    <p class="card-text">Sistema para criação de usuário.</p>
                     <a href="{% url 'criausuario' %}" class="btn btn-primary custom-width-6">Entrar</a>
                 </div>
             </div>
@@ -24,8 +24,28 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Transferência de usuário AD</h5>
-                    <p class="card-text">Sistema de script para transferência de usuário AD</p>
-                    <a href="{% url 'criausuario' %}" class="btn btn-primary custom-width-6">Entrar</a>
+                    <p class="card-text">Sistema para transferência de usuário.</p>
+                    <a href="{% url 'mudausuario' %}" class="btn btn-primary custom-width-6">Entrar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6 mb-2">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Desabilitar usuário AD</h5>
+                    <p class="card-text">Sistema de script para desabilitar usuário.</p>
+                    <a href="{% url 'desabilitausuario' %}" class="btn btn-primary custom-width-6">Entrar</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 mb-2">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Cópia de grupos</h5>
+                    <p class="card-text">Sistema para copiar grupos de um usuário para outro.</p>
+                    <a href="#" class="btn btn-primary custom-width-6">Breve</a>
                 </div>
             </div>
         </div>

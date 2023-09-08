@@ -57,7 +57,7 @@ def get_license(licenca,tipo):
         tipo_de_licenca +='APRENDIZES_SG'
     return tipo_de_licenca
 
-def get_data_script(dados_script,dados_funcionario,dados_aliases,primeiro_nome,
+def get_data_script_add(dados_script,dados_funcionario,dados_aliases,primeiro_nome,
                        sobrenome,nome_completo,nome_logon,email,numero_uo,
                        nome_uo,descricao,grupos,grupos_gerais,tipo,escritorio,
                        cidade_uo,estado_uo,sede_ou_unidade,licenca,
