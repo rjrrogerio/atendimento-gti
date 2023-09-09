@@ -15,10 +15,12 @@ Including another URLconf
 """
 
 from django.urls import path
-from .views import create_user, change_user, disable_user
+from .views import create_user, change_user, disable_user,copy_group
 
 urlpatterns = [
     path('criausuario',create_user, name='criausuario'),
     path('mudausuario',change_user, name='mudausuario'),    
     path('desabilitausuario',disable_user, name='desabilitausuario'),    
+    path('copiargrupo',copy_group, name='copiargrupo'),    
 ]
+

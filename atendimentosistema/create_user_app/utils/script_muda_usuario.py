@@ -30,9 +30,10 @@ def get_data_script_change(dados_script,nome_logon,nome_uo,descricao,grupos,grup
         nome_uo_ad = nome_uo_ad,
         sede_ou_unidade = sede_ou_unidade))
     
-    dados_script.append('Get-ADPrincipalGroupMembership {nome_logon} | Remove-ADGroupMember -Members {nome_logon} -Confirm:$false;\n'.format(nome_logon = nome_logon))
+    dados_script.append('$groups = get-adprincipalgroupmembership {nome_logon};\nforeach ($group in $groups){{\n   if ($group.name -ne "domain users") {{\n        remove-adgroupmember -Identity $group.name -Member {nome_logon} -Confirm:$false}}}};\n'.format(nome_logon = nome_logon))
 
-    dados_script.append('Set-ADUser -Identity rogerio.teste -Description "{descricao}" -Office "{escritorio}" -Department "{nome_uo}" -City "{cidade_uo}";\n'.format(
+    dados_script.append('Set-ADUser -Identity {nome_logon} -Description "{descricao}" -Office "{escritorio}" -Department "{nome_uo}" -City "{cidade_uo}";\n'.format(
+        nome_logon=nome_logon,
         descricao=descricao,
         cidade_uo=cidade_uo,
         nome_uo=nome_uo,
@@ -44,6 +45,6 @@ def get_data_script_change(dados_script,nome_logon,nome_uo,descricao,grupos,grup
     '''for grupo in grupos_gerais:
         dados_script.append('Add-DistributionGroupMember -Identity "{grupo}" -Members {nome_logon};\n'.format(grupo=grupo,nome_logon=nome_logon))'''
 
-    dados_script.append('Add-ADGroupMember -Identity "{tipo_de_licenca}" -Members {nome_logon};\n'.format(tipo_de_licenca=tipo_de_licenca,nome_logon=nome_logon))
+    dados_script.append('Add-ADGroupMember -Identity "{tipo_de_licenca}" -Members {nome_logon};\n\n'.format(tipo_de_licenca=tipo_de_licenca,nome_logon=nome_logon))
 
     return dados_script

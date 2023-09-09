@@ -17,7 +17,7 @@ $(function () {
   var changeButton = $('.change_button');
   var disableButton = $('.disable_button');
   var removeButton = $('.remove_button');
-  var createScript = $('.create_script');
+  var copyGroupButton = $('.copy_group_button');
   var wrapper = $('.field_wrapper');
   var x = 1; //Initial field counter is 1
   //when add button is clicked
@@ -65,6 +65,15 @@ $(function () {
       const innerDiv = document.getElementById('field_uo-'+x).querySelector('#field_uo')
       //const innerDiv = document.getElementById('field_uo-'+x++)
       innerDiv.setAttribute("name","field_uo["+x+"]")
+      x++;   
+      document.getElementById('countField').value = x
+    }
+  });
+  $(copyGroupButton).click(function () {    
+    if (x < maxField) {
+      var fieldHTML = '<div class="row line'+x+'" ><div class="col-2 m-1"></div><div class="col m-1" id="id_field_email"> <input class="form-control" type="text" id="field_email" name="field_email_base['+x+']" value="" placeholder="nome.sobrenome do usuário base" required="required"/> </div><div class="col m-1" id="id_field_email"> <input class="form-control" type="text" id="field_email" name="field_email_destino['+x+']" value="" placeholder="nome.sobrenome usuário destino" required="required"/> </div><div class="col-2 m-1"></div></div>';;
+      
+      $(wrapper).append(fieldHTML);
       x++;   
       document.getElementById('countField').value = x
     }

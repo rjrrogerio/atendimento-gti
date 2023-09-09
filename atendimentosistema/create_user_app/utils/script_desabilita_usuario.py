@@ -10,6 +10,6 @@ def get_data_script_disable(dados_script,nome_logon,sede_ou_unidade,nome_uo_ad):
     
     dados_script.append('Disable-ADAccount -Identity {nome_logon};\n'.format(nome_logon = nome_logon))
 
-    dados_script.append('Get-ADPrincipalGroupMembership {nome_logon} | Remove-ADGroupMember -Members {nome_logon} -Confirm:$false;\n'.format(nome_logon = nome_logon))
+    dados_script.append('$groups = get-adprincipalgroupmembership {nome_logon};\nforeach ($group in $groups){{\n   if ($group.name -ne "domain users") {{\n        remove-adgroupmember -Identity $group.name -Member {nome_logon} -Confirm:$false}}}};\n'.format(nome_logon = nome_logon))
 
     return dados_script

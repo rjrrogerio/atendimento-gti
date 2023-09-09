@@ -7,6 +7,7 @@ from .utils.script_novo_usuario import create_password
 from .utils.script_novo_usuario import get_uo
 from .utils.script_novo_usuario import name_split
 from .utils.script_muda_usuario import get_data_script_change
+from .utils.script_add_grupo import get_data_script_group
 from .utils.script_desabilita_usuario import get_data_script_disable
 from .models import Unidade
 
@@ -139,3 +140,19 @@ def disable_user(request):
     
 
     return render(request, 'create_user_app/disable_user_home.html', context)
+
+def copy_group(request):
+    dados_script = []
+    context = {}
+    if request.method == "POST":
+        context = {}
+        countField = int(request.POST.get('countField'))
+        for i in range(countField):
+            nome_logon_base = request.POST.get('field_email_base[{}]'.format(i))
+            nome_logon_destino = request.POST.get('field_email_destino[{}]'.format(i))
+            
+            dados_script = get_data_script_group(dados_script,nome_logon_base,nome_logon_destino)
+            response = HttpResponse(dados_script, content_type='application/text charset=utf-8')
+        response['Content-Disposition'] = 'attachment; filename="script.txt"'
+        return response
+    return render(request, 'create_user_app/copy_group_home.html', context)
