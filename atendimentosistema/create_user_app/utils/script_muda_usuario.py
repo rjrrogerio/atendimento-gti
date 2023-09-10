@@ -30,7 +30,9 @@ def get_data_script_change(dados_script,nome_logon,nome_uo,descricao,grupos,grup
         nome_uo_ad = nome_uo_ad,
         sede_ou_unidade = sede_ou_unidade))
     
-    dados_script.append('$groups = get-adprincipalgroupmembership {nome_logon};\nforeach ($group in $groups){{\n   if ($group.name -ne "domain users") {{\n        remove-adgroupmember -Identity $group.name -Member {nome_logon} -Confirm:$false}}}};\n'.format(nome_logon = nome_logon))
+    dados_script.append("Get-AdPrincipalGroupMembership -Identity {nome_logon} | Where-Object -Property Name -Ne -Value 'Domain Users' | Remove-AdGroupMember -Members {nome_logon} -Confirm:$false;\n".format(nome_logon = nome_logon))
+
+    
 
     dados_script.append('Set-ADUser -Identity {nome_logon} -Description "{descricao}" -Office "{escritorio}" -Department "{nome_uo}" -City "{cidade_uo}";\n'.format(
         nome_logon=nome_logon,

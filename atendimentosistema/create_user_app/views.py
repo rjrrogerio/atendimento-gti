@@ -70,7 +70,7 @@ def create_user(request):
             messages.info(request,dado_aliases)
         return response
 
-    return render(request, 'create_user_app/create_user_home.html', context)
+    return render(request, 'user_app/create_user_home.html', context)
 
 def change_user(request):
     dados_script = []
@@ -111,7 +111,7 @@ def change_user(request):
         return response
     
 
-    return render(request, 'create_user_app/change_user_home.html', context)
+    return render(request, 'user_app/change_user_home.html', context)
 
 def disable_user(request):
     dados_script = []
@@ -139,7 +139,7 @@ def disable_user(request):
         return response
     
 
-    return render(request, 'create_user_app/disable_user_home.html', context)
+    return render(request, 'user_app/disable_user_home.html', context)
 
 def copy_group(request):
     dados_script = []
@@ -155,4 +155,4 @@ def copy_group(request):
             response = HttpResponse(dados_script, content_type='application/text charset=utf-8')
         response['Content-Disposition'] = 'attachment; filename="script.txt"'
         return response
-    return render(request, 'create_user_app/copy_group_home.html', context)
+    return render(request, 'user_app/copy_group_home.html', context)
