@@ -25,14 +25,7 @@ def get_data_script_change(dados_script,nome_logon,nome_uo,descricao,grupos,grup
     
     tipo_de_licenca = get_license(licenca,'funcionario')
     
-    dados_script.append('Get-ADUser -Identity {nome_logon} | Move-ADObject -TargetPath "OU=Usuarios,OU={nome_uo_ad},OU={sede_ou_unidade},DC=sescsp,DC=local";\n'.format(
-        nome_logon = nome_logon,
-        nome_uo_ad = nome_uo_ad,
-        sede_ou_unidade = sede_ou_unidade))
-    
     dados_script.append("Get-AdPrincipalGroupMembership -Identity {nome_logon} | Where-Object -Property Name -Ne -Value 'Domain Users' | Remove-AdGroupMember -Members {nome_logon} -Confirm:$false;\n".format(nome_logon = nome_logon))
-
-    
 
     dados_script.append('Set-ADUser -Identity {nome_logon} -Description "{descricao}" -Office "{escritorio}" -Department "{nome_uo}" -City "{cidade_uo}";\n'.format(
         nome_logon=nome_logon,
@@ -48,5 +41,10 @@ def get_data_script_change(dados_script,nome_logon,nome_uo,descricao,grupos,grup
         dados_script.append('Add-DistributionGroupMember -Identity "{grupo}" -Members {nome_logon};\n'.format(grupo=grupo,nome_logon=nome_logon))'''
 
     dados_script.append('Add-ADGroupMember -Identity "{tipo_de_licenca}" -Members {nome_logon};\n\n'.format(tipo_de_licenca=tipo_de_licenca,nome_logon=nome_logon))
+
+    dados_script.append('Get-ADUser -Identity {nome_logon} | Move-ADObject -TargetPath "OU=Usuarios,OU={nome_uo_ad},OU={sede_ou_unidade},DC=sescsp,DC=local";\n'.format(
+        nome_logon = nome_logon,
+        nome_uo_ad = nome_uo_ad,
+        sede_ou_unidade = sede_ou_unidade))
 
     return dados_script

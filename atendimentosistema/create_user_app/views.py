@@ -110,11 +110,10 @@ def change_user(request):
         response['Content-Disposition'] = 'attachment; filename="script.txt"'
         return response
     
-
     return render(request, 'user_app/change_user_home.html', context)
 
 def disable_user(request):
-    dados_script = []
+    dados_script = ["$startTime = Get-Date -Format MM/dd/yyyy;\n"]
     query_unidade = list(Unidade.objects.values('nomeUo','numeroUo'))
     context = {'query_unidade': query_unidade}
     if request.method == "POST":
@@ -123,7 +122,7 @@ def disable_user(request):
         for i in range(countField):
             objeto_unidade = get_uo(request.POST.get('field_uo[{}]'.format(i)))
             nome_logon = request.POST.get('field_email[{}]'.format(i))
-            
+            descricao = objeto_unidade.nomeUo
             if objeto_unidade.local == 'sede':
                 sede_ou_unidade = 'SEDE'
             elif objeto_unidade.local == 'capital':
@@ -131,14 +130,13 @@ def disable_user(request):
             else:
                 sede_ou_unidade = 'UNIDADES'
             nome_uo_ad = objeto_unidade.nomeUOnoAD
-    
-            dados_script = get_data_script_disable(dados_script,nome_logon,sede_ou_unidade,nome_uo_ad)
+
+            dados_script = get_data_script_disable(dados_script,nome_logon,sede_ou_unidade,nome_uo_ad,descricao)
     
         response = HttpResponse(dados_script, content_type='application/text charset=utf-8')
         response['Content-Disposition'] = 'attachment; filename="script.txt"'
         return response
     
-
     return render(request, 'user_app/disable_user_home.html', context)
 
 def copy_group(request):
