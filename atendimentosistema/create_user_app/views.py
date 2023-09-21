@@ -113,7 +113,7 @@ def change_user(request):
     return render(request, 'user_app/change_user_home.html', context)
 
 def disable_user(request):
-    dados_script = ["$startTime = Get-Date -Format MM/dd/yyyy;\n"]
+    dados_script = ["$startTime = Get-Date -Format dd/MM/yyyy;\n"]
     query_unidade = list(Unidade.objects.values('nomeUo','numeroUo'))
     context = {'query_unidade': query_unidade}
     if request.method == "POST":
