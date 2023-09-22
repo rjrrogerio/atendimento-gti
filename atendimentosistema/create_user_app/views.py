@@ -18,6 +18,7 @@ def create_user(request):
     dados_script = []
     dados_funcionario = []
     dados_aliases = []
+    dados_grupos = []
     if request.method == "POST":
         context = {}
         countField = int(request.POST.get('countField'))
@@ -55,8 +56,8 @@ def create_user(request):
             data_contrato = data_nao_normalizada
             senha = create_password(nome_completo,request.POST.get('field_uo[{}]'.format(i)))
     
-            dados_script,dados_funcionario,dados_aliases = get_data_script_add(
-                dados_script, dados_funcionario,dados_aliases,primeiro_nome,
+            dados_script,dados_funcionario,dados_aliases,dados_grupos = get_data_script_add(
+                dados_script, dados_funcionario,dados_aliases,dados_grupos,primeiro_nome,
                 sobrenome,nome_completo,nome_logon,email,
                 numero_uo,nome_uo,descricao,grupos,grupos_gerais,
                 tipo,escritorio,cidade_uo,estado_uo,sede_ou_unidade,
@@ -68,6 +69,8 @@ def create_user(request):
             messages.success(request, dado_funcionario)
         for dado_aliases in dados_aliases:
             messages.info(request,dado_aliases)
+        for dado_grupo in dados_grupos:
+            messages.warning(request,dado_grupo)
         return response
 
     return render(request, 'user_app/create_user_home.html', context)
@@ -113,7 +116,7 @@ def change_user(request):
     return render(request, 'user_app/change_user_home.html', context)
 
 def disable_user(request):
-    dados_script = ["$startTime = Get-Date -Format dd/MM/yyyy;\n"]
+    dados_script = ["$startTime = Get-Date -Format dd-MM-yyyy;\n"]
     query_unidade = list(Unidade.objects.values('nomeUo','numeroUo'))
     context = {'query_unidade': query_unidade}
     if request.method == "POST":
