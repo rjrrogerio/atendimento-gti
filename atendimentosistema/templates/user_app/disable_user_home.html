@@ -28,8 +28,8 @@
             placeholder="nome.sobrenome" required="required"/>
         </div>
         <div class="col m-1" id="id_field_uo">
-          <select class="form-control" id="field_uo" name="field_uo[0]">
-            <option selected>Selecione a unidade do funcionário a ser desabilitado</option>
+          <select class="form-control" id="field_uo" name="field_uo[0]" required>
+            <option disabled selected hidden value="">Selecione a unidade do funcionário a ser desabilitado</option>
               {% for unidade in query_unidade %}
                 <option  type="text"
                   value='{{ unidade.numeroUo }}'>{{ unidade.nomeUo }}</option>
