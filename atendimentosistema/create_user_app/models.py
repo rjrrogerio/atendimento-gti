@@ -23,3 +23,14 @@ class Unidade(models.Model):
     class Meta:
       ordering = ['nomeUo']
     
+
+class Transacao(models.Model):
+    usuario = models.CharField(blank=False, null=False,max_length=30)
+    data = models.CharField(blank=False, null=False,max_length=30)
+    sistemaUtilizado = models.CharField(blank=False, null=False,max_length=30)
+    loginAlterado = models.CharField(blank=False, null=False,max_length=30)
+
+    def __str__(self):
+        return '{} - {}'.format(self.usuario, self.data)
+    class Meta:
+      ordering = ['data']

@@ -48,13 +48,13 @@
                 aria-haspopup="true" aria-expanded="false">Administração</a>
                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                   {% if user.is_superuser %}                  
-                  <a class="dropdown-item" href="/admin">Painel Administração</a>
+                    <a class="dropdown-item" href="/admin">Painel Administração</a>
                   {% endif %}  
                   {% if user.is_authenticated %}
-                  <a class="dropdown-item" href="#"><strong>Usuário: {{user.username}}</strong></a>
-                    <a class="dropdown-item" href="/admin/logout/">Logout</a>
+                    <a class="dropdown-item" href="#"><strong>Usuário: {{user.username}}</strong></a>
+                    <a class="dropdown-item" href="/accounts/logout/">Logout</a>
                   {% else %}
-                    <a class="dropdown-item" href="/admin/">Login</a>
+                    <a class="dropdown-item" href="/accounts/login">Login</a>
                   {% endif %}
                 </div>
               </li>

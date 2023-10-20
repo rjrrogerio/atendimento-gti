@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from .utils.script_novo_usuario import get_data_script_add
 from .utils.script_novo_usuario import normalize_name
 from .utils.script_novo_usuario import create_password
@@ -11,6 +12,7 @@ from .utils.script_add_grupo import get_data_script_group
 from .utils.script_desabilita_usuario import get_data_script_disable
 from .models import Unidade
 
+@login_required
 def create_user(request):
     query_unidade = list(Unidade.objects.values('nomeUo','numeroUo'))
     context = {'query_unidade': query_unidade}
