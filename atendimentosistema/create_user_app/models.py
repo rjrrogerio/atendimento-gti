@@ -26,11 +26,11 @@ class Unidade(models.Model):
 
 class Transacao(models.Model):
     usuario = models.CharField(blank=False, null=False,max_length=30)
-    data = models.CharField(blank=False, null=False,max_length=30)
+    data = models.DateField(blank=False, null=False)
     sistemaUtilizado = models.CharField(blank=False, null=False,max_length=30)
     loginAlterado = models.CharField(blank=False, null=False,max_length=30)
 
     def __str__(self):
-        return '{} - {}'.format(self.usuario, self.data)
+        return 'ID: {} - {} - {} - {} - login alterado: {}'.format(self.id, self.usuario, self.data, self.sistemaUtilizado, self.loginAlterado)
     class Meta:
       ordering = ['data']
