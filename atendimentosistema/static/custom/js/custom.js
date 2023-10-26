@@ -12,7 +12,7 @@ $(function () {
     }
   })
 
-  var maxField = 20; //Input fields increment limitation
+  var maxField = 30; //Input fields increment limitation
   var addButton = $('.add_button');
   var changeButton = $('.change_button');
   var disableButton = $('.disable_button');
