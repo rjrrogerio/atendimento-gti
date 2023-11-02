@@ -14,7 +14,7 @@ from .utils.script_desabilita_usuario import get_data_script_disable
 from .utils.create_log import save_log
 from .models import Unidade
 
-@login_required
+#@login_required
 def create_user(request):
     query_unidade = list(Unidade.objects.values('nomeUo','numeroUo'))
     context = {'query_unidade': query_unidade}

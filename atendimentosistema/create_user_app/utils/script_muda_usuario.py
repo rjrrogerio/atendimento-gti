@@ -31,7 +31,7 @@ def get_data_script_change(dados_script,nome_logon,nome_uo,descricao,grupos,grup
         nome_logon = nome_logon,
         server_name = server_name))
 
-    dados_script.append('Set-ADUser -Identity {nome_logon} {server_name} -Description "{descricao}" -Office "{escritorio}" -Department "{nome_uo}" -City "{cidade_uo}";\n'.format(
+    dados_script.append('Set-ADUser -Identity {nome_logon} {server_name} -Description "{descricao}" -Office "{escritorio}" -Department "{nome_uo}" -City "{cidade_uo}" -Enabled $True;\n'.format(
         nome_logon = nome_logon,
         server_name = server_name,
         descricao = descricao,
