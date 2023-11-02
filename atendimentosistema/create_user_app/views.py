@@ -1,6 +1,8 @@
+from datetime import date
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from .utils.script_novo_usuario import get_data_script_add
 from .utils.script_novo_usuario import normalize_name
 from .utils.script_novo_usuario import create_password
@@ -9,12 +11,15 @@ from .utils.script_novo_usuario import name_split
 from .utils.script_muda_usuario import get_data_script_change
 from .utils.script_add_grupo import get_data_script_group
 from .utils.script_desabilita_usuario import get_data_script_disable
+from .utils.create_log import save_log
 from .models import Unidade
 
+#@login_required
 def create_user(request):
     query_unidade = list(Unidade.objects.values('nomeUo','numeroUo'))
     context = {'query_unidade': query_unidade}
-    
+    username = request.user.username
+    data_hoje = date.today()
     dados_script = []
     dados_funcionario = []
     dados_aliases = []
@@ -62,6 +67,8 @@ def create_user(request):
                 numero_uo,nome_uo,descricao,grupos,grupos_gerais,
                 tipo,escritorio,cidade_uo,estado_uo,sede_ou_unidade,
                 licenca,nome_uo_ad,data_contrato,senha)
+        
+        save_log(username, data_hoje,'criar usuário',nome_logon)
             
         response = HttpResponse(dados_script, content_type='application/text charset=utf-8')
         response['Content-Disposition'] = 'attachment; filename="script.txt"'

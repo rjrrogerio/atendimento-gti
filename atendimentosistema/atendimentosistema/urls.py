@@ -22,8 +22,10 @@ from .views import home,lista_uo
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("accounts/", include("django.contrib.auth.urls")),
     path('', home, name='home'),
     path('unidades', lista_uo, name='lista_uo'),
     path('',include('create_user_app.urls')),
+    
 
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -12,7 +12,7 @@ $(function () {
     }
   })
 
-  var maxField = 20; //Input fields increment limitation
+  var maxField = 30; //Input fields increment limitation
   var addButton = $('.add_button');
   var changeButton = $('.change_button');
   var disableButton = $('.disable_button');
@@ -39,7 +39,7 @@ $(function () {
   });
   $(changeButton).click(function () {    
     if (x < maxField) {
-      var fieldHTML = '<div class="row line'+x+'" ><div class="col m-1" id="id_field_email"> <input class="form-control" type="text" id="field_email" name="field_email['+x+']" value="" placeholder="nome.sobrenome" required="required"/> </div><div class="col m-1"> <select class="form-control" name="field_licenca['+x+']" aria-label=".form-select-sm example" id="tipodelicenca"> <option selected value="lica1">LIC-A1</option> <option value="lica3" name="lica3">LIC-A3</option> </select> </div></div>';
+      var fieldHTML = '<div class="row line'+x+'" ><div class="col m-1" id="id_field_email"> <input class="form-control" type="text" id="field_email" name="field_email['+x+']" value="" placeholder="nome.sobrenome" required="required"/> </div><div class="col m-1"> <select class="form-control" name="field_licenca['+x+']" aria-label=".form-select-sm example" id="tipodelicenca"> <option selected value="LIC-A1-SESCSP-SG">LIC-A1</option><option value="LIC-A1-APRENDIZES_SG">LIC-A1 Aprendiz</option><option value="LIC-A1-ESTAGIARIOS_SG">LIC-A1 Estágiário</option><option value="LIC-A1-TEMPORARIOS_SG">LIC-A1 Temporário</option><option value="LIC-A1-TEMPORARIOS_SG">LIC-A1 PJ</option><option value="LIC-A3-SESCSP_SG" >LIC-A3</option>';
       
       $(wrapper).append(fieldHTML);
       $('#id_field_uo')

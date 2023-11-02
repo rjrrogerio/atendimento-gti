@@ -25,13 +25,13 @@ def get_data_script_change(dados_script,nome_logon,nome_uo,descricao,grupos,grup
     
     server_name = '-Server "srv-ad-prd01.sescsp.local"'
 
-    tipo_de_licenca = get_license(licenca,'funcionario')
+    tipo_de_licenca = licenca
     
     dados_script.append("Get-AdPrincipalGroupMembership {server_name} -Identity {nome_logon} | Where-Object -Property Name -Ne -Value 'Domain Users' | Remove-AdGroupMember -Members {nome_logon} {server_name} -Confirm:$false;\n".format(
         nome_logon = nome_logon,
         server_name = server_name))
 
-    dados_script.append('Set-ADUser -Identity {nome_logon} {server_name} -Description "{descricao}" -Office "{escritorio}" -Department "{nome_uo}" -City "{cidade_uo}";\n'.format(
+    dados_script.append('Set-ADUser -Identity {nome_logon} {server_name} -Description "{descricao}" -Office "{escritorio}" -Department "{nome_uo}" -City "{cidade_uo}" -Enabled $True;\n'.format(
         nome_logon = nome_logon,
         server_name = server_name,
         descricao = descricao,

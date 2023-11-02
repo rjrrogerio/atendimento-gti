@@ -27,11 +27,11 @@
             placeholder="nome.sobrenome" required="required"/>
         </div>
         <div class="col m-1" id="id_field_uo">
-          <select class="form-control" id="field_uo" name="field_uo[0]">
-            <option selected>Selecione a unidade de destino</option>
+          <select class="form-control" id="field_uo" name="field_uo[0]" required>
+            <option disabled selected hidden value="">Selecione a unidade de destino</option>
               {% for unidade in query_unidade %}
                 <option  type="text"
-                  value='{{ unidade.numeroUo }}'>{{ unidade.nomeUo }}</option>
+                  value='{{ unidade.numeroUo }}'>{{ unidade.nomeUo }} </option>
               {% endfor %}
           </select>
         </div>
@@ -39,9 +39,13 @@
           <select class="form-control"
             name="field_licenca[0]"
             aria-label=".form-select-sm example"
-            id="tipodelicenca">
-            <option selected value="lica1">LIC-A1</option>
-            <option value="lica3" >LIC-A3</option>
+            id="tipodelicenca" >
+            <option selected value="LIC-A1-SESCSP-SG">LIC-A1</option>
+            <option value="LIC-A1-APRENDIZES_SG">LIC-A1 Aprendiz</option>
+            <option value="LIC-A1-ESTAGIARIOS_SG">LIC-A1 Estágiário</option>
+            <option value="LIC-A1-TEMPORARIOS_SG">LIC-A1 Temporário</option>
+            <option value="LIC-A1-TEMPORARIOS_SG">LIC-A1 PJ</option>
+            <option value="LIC-A3-SESCSP_SG" >LIC-A3</option>
           </select>
         </div>
       </div>
