@@ -67,8 +67,8 @@ def create_user(request):
                 numero_uo,nome_uo,descricao,grupos,grupos_gerais,
                 tipo,escritorio,cidade_uo,estado_uo,sede_ou_unidade,
                 licenca,nome_uo_ad,data_contrato,senha)
-        
-        save_log(username, data_hoje,'criar usuário',nome_logon)
+    
+            save_log(username, data_hoje,'Criação de usuário',nome_logon)
             
         response = HttpResponse(dados_script, content_type='application/text charset=utf-8')
         response['Content-Disposition'] = 'attachment; filename="script.txt"'
@@ -92,7 +92,6 @@ def change_user(request):
         for i in range(countField):
             objeto_unidade = get_uo(request.POST.get('field_uo[{}]'.format(i)))
             nome_logon = request.POST.get('field_email[{}]'.format(i))
-            descricao = objeto_unidade.nomeUo
             try:
                 grupos = objeto_unidade.grupoUo.split(',')
             except:
@@ -112,6 +111,17 @@ def change_user(request):
             escritorio = "SESC " + objeto_unidade.nomeUo
             cidade_uo = objeto_unidade.cidadeUo
             licenca = request.POST.get('field_licenca[{}]'.format(i))
+
+            if licenca == "LIC-A1-SESCSP-SG" or licenca == "LIC-A3-SESCSP_SG":
+                descricao = objeto_unidade.nomeUo
+            elif licenca == "LIC-A1-APRENDIZES_SG":
+                descricao = objeto_unidade.nomeUo + " - Aprendiz"
+            elif licenca == "LIC-A1-ESTAGIARIOS_SG":
+                descricao = objeto_unidade.nomeUo + " - Estagiário"
+            else:
+                descricao = objeto_unidade.nomeUo + " - Temporário"
+            print(licenca)
+            print(descricao)
     
             dados_script = get_data_script_change(dados_script,nome_logon,nome_uo,descricao,
                                                   grupos,grupos_gerais,escritorio,cidade_uo,sede_ou_unidade,licenca,nome_uo_ad)

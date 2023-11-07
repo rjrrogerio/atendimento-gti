@@ -33,5 +33,5 @@ class Transacao(models.Model):
     def __str__(self):
         return 'ID: {} - {} - {} - {} - login alterado: {}'.format(self.id, self.usuario, self.data, self.sistemaUtilizado, self.loginAlterado)
     class Meta:
-        ordering = ['data']
+        ordering = ['id']
         verbose_name_plural  =  "Transacoes" 
