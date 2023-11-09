@@ -89,12 +89,28 @@ $(function () {
     });
   });
   
-  $('.myformuser').submit(function(event){
-      setTimeout(function () {
-        window.location.reload(1);
-      }, 1000);
-  });
-  
+  $('#textAreaBtn').click(function() { 
+    const element = document.querySelector('#textAreaCopy');
+    element.select();
+    element.setSelectionRange(0, 99999);
+    document.execCommand('copy');
+    document.getElementById("textAreaBtn").innerHTML = "Copiado!";
+    
+    
+  ;}); 
+
+  var content = document.getElementById('textAreaCopy').value;
+  if(content.length<20)
+  {
+    document.getElementById('textAreaCopy').style.display = "none";
+    document.getElementById('textAreaBtn').style.display = "none";
+  }
+  else
+  {
+    document.getElementById('textAreaCopy').style.display = "block";
+    document.getElementById('textAreaBtn').style.display = "block";
+  }
+
 });
 
 

@@ -71,7 +71,7 @@ def get_data_script_add(dados_script,dados_funcionario,dados_aliases,dados_grupo
     tipo_de_licenca = get_license(licenca,tipo)
     data_contrato_normalizada = normalize_date(data_contrato)
 
-    dados_script.append('if (!(Get-aduser -filter {{samaccountname -eq "{nome_logon}"}})) {{\nNew-ADUser -Name "{nome_completo}" {server_name} -GivenName "{primeiro_nome}" -Surname "{sobrenome}" -SamAccountName "{nome_logon}" -DisplayName "{nome_completo}" -Company "SESCSP" -UserPrincipalName "{nome_logon}@sescsp.org.br" -EmailAddress "{email}" -Description "{descricao}" -Office "{escritorio}" -Department "{nome_uo}" -City "{cidade_uo}" -State "{estado_uo}" -AccountPassword (ConvertTo-SecureString -AsPlainText “{senha}” -Force) -ChangePasswordAtLogon $True -Path "OU=Usuarios,OU={nome_uo_ad},OU={sede_ou_unidade},DC=sescsp,DC=local" -Enabled $True;\n'.format(
+    dados_script.append('if (!(Get-aduser -filter {{samaccountname -eq "{nome_logon}"}})) {{New-ADUser -Name "{nome_completo}" {server_name} -GivenName "{primeiro_nome}" -Surname "{sobrenome}" -SamAccountName "{nome_logon}" -DisplayName "{nome_completo}" -Company "SESCSP" -UserPrincipalName "{nome_logon}@sescsp.org.br" -EmailAddress "{email}" -Description "{descricao}" -Office "{escritorio}" -Department "{nome_uo}" -City "{cidade_uo}" -State "{estado_uo}" -AccountPassword (ConvertTo-SecureString -AsPlainText “{senha}” -Force) -ChangePasswordAtLogon $True -Path "OU=Usuarios,OU={nome_uo_ad},OU={sede_ou_unidade},DC=sescsp,DC=local" -Enabled $True;'.format(
         primeiro_nome = primeiro_nome,
         server_name = server_name,
         sobrenome = sobrenome,
@@ -94,30 +94,30 @@ def get_data_script_add(dados_script,dados_funcionario,dados_aliases,dados_grupo
         sede_ou_unidade = sede_ou_unidade
     ))
     
-    dados_script.append('Set-ADUser '+server_name+' '+nome_logon+' -add @{ProxyAddresses="smtp:'+nome_logon+'@sede.sescsp.org.br,SMTP:'+nome_logon+'@sescsp.org.br" -split ","};\n')
+    dados_script.append('Set-ADUser '+server_name+' '+nome_logon+' -add @{ProxyAddresses="smtp:'+nome_logon+'@sede.sescsp.org.br,SMTP:'+nome_logon+'@sescsp.org.br" -split ","};')
     if grupos is not None:
         for grupo in grupos:
-            dados_script.append('Add-ADGroupMember {server_name} -Identity "{grupo}" -Members {nome_logon};\n'.format(
+            dados_script.append('Add-ADGroupMember {server_name} -Identity "{grupo}" -Members {nome_logon};'.format(
                 grupo = grupo,
                 server_name = server_name,
                 nome_logon = nome_logon))
     for grupo in grupos_gerais:
-        dados_grupos.append('Add-DistributionGroupMember -Identity "{grupo}" -Member {nome_logon};\n'.format(
+        dados_grupos.append('Add-DistributionGroupMember -Identity "{grupo}" -Member {nome_logon};'.format(
             grupo = grupo,
             server_name = server_name,
             nome_logon = nome_logon))
 
-    dados_script.append('Add-ADGroupMember -Identity "{tipo_de_licenca}" -Members {nome_logon} {server_name};\n'.format(
+    dados_script.append('Add-ADGroupMember -Identity "{tipo_de_licenca}" -Members {nome_logon} {server_name};'.format(
         tipo_de_licenca = tipo_de_licenca,
         server_name = server_name,
         nome_logon = nome_logon))
 
     if tipo != 'funcionario' and data_contrato_normalizada is not None:
-        dados_script.append('Get-ADUser -Identity {nome_logon} {server_name} | Set-AdUser -AccountExpirationDate "{data_contrato_normalizada}" {server_name};\n'.format(
+        dados_script.append('Get-ADUser -Identity {nome_logon} {server_name} | Set-AdUser -AccountExpirationDate "{data_contrato_normalizada}" {server_name};'.format(
             nome_logon = nome_logon,
             server_name = server_name,
             data_contrato_normalizada = data_contrato_normalizada))
         
-    dados_script.append("}} else {{ write-host 'Usuário {nome_logon} já existe'}};\n".format(nome_logon=nome_logon))
+    dados_script.append("}} else {{ write-host 'Usuário {nome_logon} já existe'}};".format(nome_logon=nome_logon))
 
     return dados_script,dados_funcionario,dados_aliases,dados_grupos

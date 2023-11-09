@@ -70,16 +70,15 @@ def create_user(request):
     
             save_log(username, data_hoje,'Criação de usuário',nome_logon)
             
-        response = HttpResponse(dados_script, content_type='application/text charset=utf-8')
-        response['Content-Disposition'] = 'attachment; filename="script.txt"'
+        
         for dado_funcionario in dados_funcionario:
             messages.success(request, dado_funcionario)
         for dado_aliases in dados_aliases:
             messages.info(request,dado_aliases)
         for dado_grupo in dados_grupos:
             messages.warning(request,dado_grupo)
-        return response
-
+        context = {'query_unidade': query_unidade, 'dados_script': dados_script}
+    
     return render(request, 'user_app/create_user_home.html', context)
 
 def change_user(request):
