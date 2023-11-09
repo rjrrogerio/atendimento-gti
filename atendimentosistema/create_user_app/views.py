@@ -119,8 +119,6 @@ def change_user(request):
                 descricao = objeto_unidade.nomeUo + " - Estagiário"
             else:
                 descricao = objeto_unidade.nomeUo + " - Temporário"
-            print(licenca)
-            print(descricao)
     
             dados_script = get_data_script_change(dados_script,nome_logon,nome_uo,descricao,
                                                   grupos,grupos_gerais,escritorio,cidade_uo,sede_ou_unidade,licenca,nome_uo_ad)
