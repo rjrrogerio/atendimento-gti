@@ -99,17 +99,17 @@ $(function () {
     
   ;}); 
 
-  var content = document.getElementById('textAreaCopy').value;
-  if(content.length<20)
-  {
-    document.getElementById('textAreaCopy').style.display = "none";
-    document.getElementById('textAreaBtn').style.display = "none";
+  var textARea = document.getElementById('textAreaCopy')
+
+  if (textARea !== null) {
+    var content = textARea.value;
+    if(content.length>20)
+    {
+      document.getElementById('textAreaCopy').style.display = "block";
+      document.getElementById('textAreaBtn').style.display = "block";
+    }
   }
-  else
-  {
-    document.getElementById('textAreaCopy').style.display = "block";
-    document.getElementById('textAreaBtn').style.display = "block";
-  }
+  
 
 });
 
