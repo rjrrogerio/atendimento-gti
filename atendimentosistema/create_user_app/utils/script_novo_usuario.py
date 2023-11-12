@@ -70,6 +70,9 @@ def get_data_script_add(dados_script,dados_funcionario,dados_aliases,dados_grupo
     
     tipo_de_licenca = get_license(licenca,tipo)
     data_contrato_normalizada = normalize_date(data_contrato)
+    if escritorio == "SESC Mogi das Cruzes":
+        nome_uo_ad = "72-Mogi das Cruzes\ "
+        
 
     dados_script.append('if (!(Get-aduser -filter {{samaccountname -eq "{nome_logon}"}})) {{New-ADUser -Name "{nome_completo}" {server_name} -GivenName "{primeiro_nome}" -Surname "{sobrenome}" -SamAccountName "{nome_logon}" -DisplayName "{nome_completo}" -Company "SESCSP" -UserPrincipalName "{nome_logon}@sescsp.org.br" -EmailAddress "{email}" -Description "{descricao}" -Office "{escritorio}" -Department "{nome_uo}" -City "{cidade_uo}" -State "{estado_uo}" -AccountPassword (ConvertTo-SecureString -AsPlainText “{senha}” -Force) -ChangePasswordAtLogon $True -Path "OU=Usuarios,OU={nome_uo_ad},OU={sede_ou_unidade},DC=sescsp,DC=local" -Enabled $True;'.format(
         primeiro_nome = primeiro_nome,

@@ -10,6 +10,10 @@ def get_data_script_disable(dados_script,nome_logon,sede_ou_unidade,nome_uo_ad,d
         server_name = server_name,
         nome_logon = nome_logon, 
         descricao = descricao))
+    
+    if descricao == "Mogi das Cruzes":
+        nome_uo_ad = "72-Mogi das Cruzes\ "
+    
 
     dados_script.append("Get-AdPrincipalGroupMembership {server_name} -Identity {nome_logon} | Where-Object -Property Name -Ne -Value 'Domain Users' | Remove-AdGroupMember -Members {nome_logon} {server_name} -Confirm:$false;\n".format(
         server_name = server_name,

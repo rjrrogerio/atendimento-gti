@@ -1,31 +1,14 @@
 from django.shortcuts import get_object_or_404
 from ..models import Unidade
 
-def get_license(licenca,tipo):
-
-    if licenca == 'lica1':
-        tipo_de_licenca = 'LIC-A1-'
-    else:
-        tipo_de_licenca = 'LIC-A3-'
-
-    if licenca == 'lica1' and tipo =='funcionario':
-        tipo_de_licenca +='SESCSP-SG' 
-    elif tipo =='funcionario':
-        tipo_de_licenca +='SESCSP_SG' 
-    elif tipo =='estagiario':
-        tipo_de_licenca +='ESTAGIARIOS_SG' 
-    elif tipo =='temporario' or tipo=='pj':
-        tipo_de_licenca +='TEMPORARIOS_SG'
-    else:
-        tipo_de_licenca +='APRENDIZES_SG'
-    return tipo_de_licenca
-
 def get_data_script_change(dados_script,nome_logon,nome_uo,descricao,grupos,grupos_gerais,
                 escritorio,cidade_uo,sede_ou_unidade,licenca,nome_uo_ad):
     
     server_name = '-Server "srv-ad-prd01.sescsp.local"'
 
     tipo_de_licenca = licenca
+    if escritorio == "SESC Mogi das Cruzes":
+        nome_uo_ad = "72-Mogi das Cruzes\ "
     
     dados_script.append("Get-AdPrincipalGroupMembership {server_name} -Identity {nome_logon} | Where-Object -Property Name -Ne -Value 'Domain Users' | Remove-AdGroupMember -Members {nome_logon} {server_name} -Confirm:$false;\n".format(
         nome_logon = nome_logon,
