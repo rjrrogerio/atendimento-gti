@@ -1,0 +1,55 @@
+{% extends 'partials/base.html' %}
+
+{% load static %}
+
+
+{% block main %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Sistemas</h1>
+</div>
+
+
+<div>
+    <div class="row">
+        <div class="col-sm-6 mb-2">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Cadastro de usuário</h5>
+                    <p class="card-text">Sistema para criação de usuário.</p>
+                    <a href="{% url 'criausuario' %}" class="btn btn-primary custom-width-6">Entrar</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 mb-2">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Transferência de usuário</h5>
+                    <p class="card-text">Sistema para transferência de usuário.</p>
+                    <a href="{% url 'mudausuario' %}" class="btn btn-primary custom-width-6">Entrar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6 mb-2">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Desabilitar usuário</h5>
+                    <p class="card-text">Sistema para desabilitar usuário.</p>
+                    <a href="{% url 'desabilitausuario' %}" class="btn btn-primary custom-width-6">Entrar</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 mb-2">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Cópia de grupos</h5>
+                    <p class="card-text">Sistema para cópia de grupos.</p>
+                    <a href="#" class="btn btn-primary custom-width-6">Em análise</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
