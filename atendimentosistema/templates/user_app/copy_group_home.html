@@ -25,12 +25,12 @@
         <div class="col m-1">
           <input class="form-control " type="text"
             name="field_email_base[0]" value=""
-            placeholder="nome.sobrenome do usuário base" required="required"/>
+            placeholder="nome.sobrenome do gerente" required="required"/>
         </div>
         <div class="col m-1">
           <input class="form-control " type="text"
             name="field_email_destino[0]" value=""
-            placeholder="nome.sobrenome usuário destino" required="required"/>
+            placeholder="nome.sobrenome gerente adjunto" required="required"/>
         </div>
         <div class="col-2 m-1"></div>
       </div>
@@ -47,6 +47,18 @@
           class="create_script_django btn btn-dark"
           title="Add script">Criar script ps1</a>
         </button>
+      </div>
+      <div class="row">
+        <textarea readonly class="form-control border border-secondary" id="textAreaCopy" rows="3" style="display: none;">
+          {% for x in dados_script %}
+          {{ x }}
+          {% endfor %}
+        </textarea>
+      </div>
+      <div class="row">
+        <div class="col-12 text-center m-1" id="textAreaBtn" style="display: none;">
+          <a class=" btn btn-success">Copiar</a>
+        </div>
       </div>
     </div>
   </form>

@@ -52,6 +52,18 @@
           title="Add script">Criar script ps1</a>
         </button>
       </div>
+      <div class="row">
+        <textarea readonly class="form-control border border-secondary" id="textAreaCopy" rows="3" style="display: none;">
+          {% for x in dados_script %}
+          {{ x }}
+          {% endfor %}
+        </textarea>
+      </div>
+      <div class="row">
+        <div class="col-12 text-center m-1" id="textAreaBtn" style="display: none;">
+          <a class=" btn btn-success">Copiar</a>
+        </div>
+      </div>
     </div>
   </form>
 </div>

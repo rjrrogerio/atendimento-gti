@@ -89,6 +89,7 @@ def change_user(request):
         context = {}
         countField = int(request.POST.get('countField'))
         for i in range(countField):
+            objeto_unidade_origem = get_uo(request.POST.get('field_uo_origem[{}]'.format(i)))
             objeto_unidade = get_uo(request.POST.get('field_uo[{}]'.format(i)))
             nome_logon = request.POST.get('field_email[{}]'.format(i))
             try:
@@ -105,6 +106,19 @@ def change_user(request):
             else:
                 grupos_gerais = ["Grupo Geral Unidades SescSP","Grupo Geral Unidades do Interior SescSP"]
                 sede_ou_unidade = 'UNIDADES'
+
+            if objeto_unidade_origem.local == 'sede':
+                grupos_gerais_remove = ["remove da sede"]
+                sede_ou_unidade = 'SEDE'
+            elif objeto_unidade_origem.local == 'capital':
+                grupos_gerais_remove = ["remove capital","remove_unidade"]
+                sede_ou_unidade = 'UNIDADES'
+            else:
+                grupos_gerais_remove = ["remove interior","remove_unidade"]
+                sede_ou_unidade = 'UNIDADES'
+
+
+            nome_uo_ad = objeto_unidade.nomeUOnoAD
             nome_uo_ad = objeto_unidade.nomeUOnoAD
             nome_uo = objeto_unidade.nomeUo
             escritorio = "SESC " + objeto_unidade.nomeUo
@@ -121,11 +135,9 @@ def change_user(request):
                 descricao = objeto_unidade.nomeUo + " - Temporário"
     
             dados_script = get_data_script_change(dados_script,nome_logon,nome_uo,descricao,
-                                                  grupos,grupos_gerais,escritorio,cidade_uo,sede_ou_unidade,licenca,nome_uo_ad)
+                                                  grupos,grupos_gerais,grupos_gerais_remove,escritorio,cidade_uo,sede_ou_unidade,licenca,nome_uo_ad)
     
-        response = HttpResponse(dados_script, content_type='application/text charset=utf-8')
-        response['Content-Disposition'] = 'attachment; filename="script.txt"'
-        return response
+        context = {'query_unidade': query_unidade, 'dados_script': dados_script}
     
     return render(request, 'user_app/change_user_home.html', context)
 
@@ -150,9 +162,7 @@ def disable_user(request):
 
             dados_script = get_data_script_disable(dados_script,nome_logon,sede_ou_unidade,nome_uo_ad,descricao)
     
-        response = HttpResponse(dados_script, content_type='application/text charset=utf-8')
-        response['Content-Disposition'] = 'attachment; filename="script.txt"'
-        return response
+        context = {'query_unidade': query_unidade, 'dados_script': dados_script}
     
     return render(request, 'user_app/disable_user_home.html', context)
 
@@ -167,7 +177,6 @@ def copy_group(request):
             nome_logon_destino = request.POST.get('field_email_destino[{}]'.format(i))
             
             dados_script = get_data_script_group(dados_script,nome_logon_base,nome_logon_destino)
-            response = HttpResponse(dados_script, content_type='application/text charset=utf-8')
-        response['Content-Disposition'] = 'attachment; filename="script.txt"'
-        return response
+        context = {'dados_script': dados_script}
+
     return render(request, 'user_app/copy_group_home.html', context)
