@@ -23,7 +23,7 @@ $(function () {
   //when add button is clicked
   $(addButton).click(function () {    
     if (x < maxField) {
-      var fieldHTML = '<div class="row line'+x+'" > <div class="col-3 m-1"> <input class="form-control " type="text" name="field_nome['+x+']" value="" placeholder="Nome completo" required="required"/> </div> <div class="col-2 m-1" id="id_field_email"> <input class="form-control" type="text" id="field_email" name="field_email['+x+']" value="" placeholder="nome.sobrenome" required="required"/> </div><div class="col-2 m-1"> <select class="form-control" name="field_tipo['+x+']" aria-label=".form-select-lg example" id="tipodefuncionario"> <option selected value="funcionario">Funcionário</option> <option value="estagiario">Estagiário</option><option value="pj">PJ</option> <option value="temporario">Temporário</option><option value="aprendiz">Aprendiz</option></select> </div> <div class="col-1 m-1"> <select class="form-control" name="field_licenca['+x+']" aria-label=".form-select-sm example" id="tipodelicenca"> <option selected value="lica1">LIC-A1</option> <option value="lica3" name="lica3">LIC-A3</option> </select> </div> <div class="col-2 m-1" id="datacontrato['+x+']" style="display: none"> <input class="form-control" id="datacontrato" type="date" name="field_data_contrato['+x+']" placeholder="Data do contrato"> </div> </div>';
+      var fieldHTML = '<div class="row line'+x+'" > <div class="col-3 m-1"> <input class="form-control " type="text" name="field_nome['+x+']" value="" placeholder="Nome completo" required="required"/> </div> <div class="col-2 m-1" id="id_field_email"> <input class="form-control" type="text" id="field_email" name="field_email['+x+']" value="" placeholder="nome.sobrenome" required="required"/> </div><div class="col-2 m-1"> <select class="form-control" name="field_tipo['+x+']" aria-label=".form-select-lg example" id="tipodefuncionario"> <option selected value="funcionario">Funcionário</option> <option value="estagiario">Estagiário</option><option value="pj">Terceiro</option> <option value="temporario">Temporário</option><option value="aprendiz">Aprendiz</option></select> </div> <div class="col-1 m-1"> <select class="form-control" name="field_licenca['+x+']" aria-label=".form-select-sm example" id="tipodelicenca"> <option selected value="lica1">LIC-A1</option> <option value="lica3" name="lica3">LIC-A3</option> </select> </div> <div class="col-2 m-1" id="datacontrato['+x+']" style="display: none"> <input class="form-control" id="datacontrato" type="date" name="field_data_contrato['+x+']" placeholder="Data do contrato"> </div> </div>';
       
       $(wrapper).append(fieldHTML);
       $('#id_field_uo')
@@ -39,16 +39,24 @@ $(function () {
   });
   $(changeButton).click(function () {    
     if (x < maxField) {
-      var fieldHTML = '<div class="row line'+x+'" ><div class="col m-1" id="id_field_email"> <input class="form-control" type="text" id="field_email" name="field_email['+x+']" value="" placeholder="nome.sobrenome" required="required"/> </div><div class="col m-1"> <select class="form-control" name="field_licenca['+x+']" aria-label=".form-select-sm example" id="tipodelicenca"> <option selected value="LIC-A1-SESCSP-SG">LIC-A1</option><option value="LIC-A1-APRENDIZES_SG">LIC-A1 Aprendiz</option><option value="LIC-A1-ESTAGIARIOS_SG">LIC-A1 Estágiário</option><option value="LIC-A1-TEMPORARIOS_SG">LIC-A1 Temporário</option><option value="LIC-A1-TEMPORARIOS_SG">LIC-A1 PJ</option><option value="LIC-A3-SESCSP_SG" >LIC-A3</option>';
+      var fieldHTML = '<div class="row line'+x+'" ><div class="col-4 m-1" id="id_field_email"> <input class="form-control" type="text" id="field_email" name="field_email['+x+']" value="" placeholder="nome.sobrenome" required="required"/> </div><div class="col-2 m-1"> <select class="form-control" name="field_licenca['+x+']" aria-label=".form-select-sm example" id="tipodelicenca"> <option selected value="LIC-A1-SESCSP-SG">LIC-A1</option><option value="LIC-A1-APRENDIZES_SG">LIC-A1 Aprendiz</option><option value="LIC-A1-ESTAGIARIOS_SG">LIC-A1 Estágiário</option><option value="LIC-A1-TEMPORARIOS_SG">LIC-A1 Temporário</option><option value="LIC-A1-TEMPORARIOS_SG_TER">LIC-A1 Terceiro</option><option value="LIC-A3-SESCSP_SG" >LIC-A3</option>';
       
       $(wrapper).append(fieldHTML);
-      $('#id_field_uo')
+      $('#field_uo_origem')
+      .clone()
+      .attr('id', 'field_uo_origem-'+x)
+      .insertAfter($('[id^=id_field_email]:last'));
+      const innerDiv = document.getElementById('field_uo_origem-'+x).querySelector('#field_uo_origem');
+      //const innerDiv = document.getElementById('field_uo-'+x++)
+      innerDiv.setAttribute("name","field_uo_origem["+x+"]")
+
+      $($('#id_field_uo'))
       .clone()
       .attr('id', 'field_uo-'+x)
-      .insertAfter($('[id^=id_field_email]:last'));
-      const innerDiv = document.getElementById('field_uo-'+x).querySelector('#field_uo')
-      //const innerDiv = document.getElementById('field_uo-'+x++)
-      innerDiv.setAttribute("name","field_uo["+x+"]")
+      .insertAfter($('[id^=field_uo_origem-'+x+']'));;
+      console.log(x)
+      const innerDiv2 = document.getElementById('field_uo-'+x).querySelector('#field_uo');
+      innerDiv2.setAttribute("name","field_uo["+x+"]");
       x++;   
       document.getElementById('countField').value = x
     }

@@ -21,13 +21,13 @@
     <input class="form-control countField" name="countField" id="countField" type="text" value=1 style="display: none;" >
     <div class="field_wrapper">
       <div class="row">
-        <div class="col m-1">
+        <div class="col-4 m-1">
           <input class="form-control " type="text"
             name="field_email[0]" value=""
             placeholder="nome.sobrenome" required="required"/>
         </div>
-        <div class="col m-1" id="id_field_uo">
-          <select class="form-control" id="field_uo" name="field_uo_origem[0]" required>
+        <div class="col-3 m-1" id="field_uo_origem">
+          <select class="form-control" id="field_uo_origem" name="field_uo_origem[0]" required>
             <option disabled selected hidden value="">Selecione a unidade de origem</option>
               {% for unidade in query_unidade %}
                 <option  type="text"
@@ -35,7 +35,7 @@
               {% endfor %}
           </select>
         </div>
-        <div class="col m-1" id="id_field_uo">
+        <div class="col-2 m-1" id="id_field_uo">
           <select class="form-control" id="field_uo" name="field_uo[0]" required>
             <option disabled selected hidden value="">Selecione a unidade de destino</option>
               {% for unidade in query_unidade %}
@@ -44,7 +44,7 @@
               {% endfor %}
           </select>
         </div>
-        <div class="col m-1">
+        <div class="col-2 m-1">
           <select class="form-control"
             name="field_licenca[0]"
             aria-label=".form-select-sm example"
@@ -53,7 +53,7 @@
             <option value="LIC-A1-APRENDIZES_SG">LIC-A1 Aprendiz</option>
             <option value="LIC-A1-ESTAGIARIOS_SG">LIC-A1 Estágiário</option>
             <option value="LIC-A1-TEMPORARIOS_SG">LIC-A1 Temporário</option>
-            <option value="LIC-A1-TEMPORARIOS_SG">LIC-A1 PJ</option>
+            <option value="LIC-A1-TEMPORARIOS_SG_TER">LIC-A1 Terceiro</option>
             <option value="LIC-A3-SESCSP_SG" >LIC-A3</option>
           </select>
         </div>

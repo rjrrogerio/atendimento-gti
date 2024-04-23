@@ -108,16 +108,14 @@ def change_user(request):
                 sede_ou_unidade = 'UNIDADES'
 
             if objeto_unidade_origem.local == 'sede':
-                grupos_gerais_remove = ["remove da sede"]
-                sede_ou_unidade = 'SEDE'
+                grupos_gerais_remove = ["Grupo Geral Sede SescSP"]
+                
             elif objeto_unidade_origem.local == 'capital':
-                grupos_gerais_remove = ["remove capital","remove_unidade"]
-                sede_ou_unidade = 'UNIDADES'
+                grupos_gerais_remove = ["Grupo Geral Unidades SescSP","Grupo Geral Unidades da Capital SescSP"]
+                
             else:
-                grupos_gerais_remove = ["remove interior","remove_unidade"]
-                sede_ou_unidade = 'UNIDADES'
-
-
+                grupos_gerais_remove = ["Grupo Geral Unidades SescSP","Grupo Geral Unidades do Interior SescSP"]
+                
             nome_uo_ad = objeto_unidade.nomeUOnoAD
             nome_uo_ad = objeto_unidade.nomeUOnoAD
             nome_uo = objeto_unidade.nomeUo

@@ -51,7 +51,7 @@ def get_license(licenca,tipo):
         tipo_de_licenca +='SESCSP_SG' 
     elif tipo =='estagiario':
         tipo_de_licenca +='ESTAGIARIOS_SG' 
-    elif tipo =='temporario' or tipo=='pj':
+    elif tipo =='temporario' or tipo=='terceiro':
         tipo_de_licenca +='TEMPORARIOS_SG'
     else:
         tipo_de_licenca +='APRENDIZES_SG'
@@ -66,12 +66,20 @@ def get_data_script_add(dados_script,dados_funcionario,dados_aliases,dados_grupo
     server_name = '-Server "srv-ad-prd01.sescsp.local"'
 
     dados_funcionario.append('Usuário: {} - Senha: {} - UO: {}'.format(nome_logon,senha,nome_uo))
-    dados_aliases.append('{}: {}@sede.sescsp.org.br'.format(nome_logon,nome_logon))
+    dados_aliases.append('grep -q "^{}:" /etc/aliases || {{ echo "{}: {}@sede.sescsp.org.br" >> /etc/aliases && newaliases; }}'.format(nome_logon,nome_logon,nome_logon))
+    
+    
+
     
     tipo_de_licenca = get_license(licenca,tipo)
     data_contrato_normalizada = normalize_date(data_contrato)
     if escritorio == "SESC Mogi das Cruzes":
         nome_uo_ad = "72-Mogi das Cruzes\ "
+    
+
+    if tipo == "Terceiro":
+        escritorio = escritorio+" - Terceiro"
+    
         
 
     dados_script.append('if (!(Get-aduser -filter {{samaccountname -eq "{nome_logon}"}})) {{New-ADUser -Name "{nome_completo}" {server_name} -GivenName "{primeiro_nome}" -Surname "{sobrenome}" -SamAccountName "{nome_logon}" -DisplayName "{nome_completo}" -Company "SESCSP" -UserPrincipalName "{nome_logon}@sescsp.org.br" -EmailAddress "{email}" -Description "{descricao}" -Office "{escritorio}" -Department "{nome_uo}" -City "{cidade_uo}" -State "{estado_uo}" -AccountPassword (ConvertTo-SecureString -AsPlainText “{senha}” -Force) -ChangePasswordAtLogon $True -Path "OU=Usuarios,OU={nome_uo_ad},OU={sede_ou_unidade},DC=sescsp,DC=local" -Enabled $True;'.format(
