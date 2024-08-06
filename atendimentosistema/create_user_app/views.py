@@ -1,10 +1,12 @@
 from datetime import date
 from django.shortcuts import render
+from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .utils.script_novo_usuario import get_data_script_add
 from .utils.script_novo_usuario import normalize_name
+from .utils.script_novo_usuario import normalize_date
 from .utils.script_novo_usuario import create_password
 from .utils.script_novo_usuario import get_uo
 from .utils.script_novo_usuario import name_split
@@ -12,7 +14,8 @@ from .utils.script_muda_usuario import get_data_script_change
 from .utils.script_add_grupo import get_data_script_group
 from .utils.script_desabilita_usuario import get_data_script_disable
 from .utils.create_log import save_log
-from .models import Unidade
+from .utils.script_add__grupo_geral import save_group
+from .models import Unidade, Grupo
 
 #@login_required
 def create_user(request):
@@ -67,7 +70,8 @@ def create_user(request):
                 numero_uo,nome_uo,descricao,grupos,grupos_gerais,
                 tipo,escritorio,cidade_uo,estado_uo,sede_ou_unidade,
                 licenca,nome_uo_ad,data_contrato,senha)
-    
+            
+            save_group(dados_grupos,data_hoje)
             save_log(username, data_hoje,'Criação de usuário',nome_logon)
             
         
@@ -75,14 +79,14 @@ def create_user(request):
             messages.success(request, dado_funcionario)
         for dado_aliases in dados_aliases:
             messages.info(request,dado_aliases)
-        for dado_grupo in dados_grupos:
-            messages.warning(request,dado_grupo)
         context = {'query_unidade': query_unidade, 'dados_script': dados_script}
     
     return render(request, 'user_app/create_user_home.html', context)
 
 def change_user(request):
     dados_script = []
+    username = request.user.username
+    data_hoje = date.today()
     query_unidade = list(Unidade.objects.values('nomeUo','numeroUo'))
     context = {'query_unidade': query_unidade}
     if request.method == "POST":
@@ -132,6 +136,7 @@ def change_user(request):
             else:
                 descricao = objeto_unidade.nomeUo + " - Temporário"
     
+            save_log(username, data_hoje,'Transferência de usuário',nome_logon)
             dados_script = get_data_script_change(dados_script,nome_logon,nome_uo,descricao,
                                                   grupos,grupos_gerais,grupos_gerais_remove,escritorio,cidade_uo,sede_ou_unidade,licenca,nome_uo_ad)
     
@@ -143,6 +148,8 @@ def disable_user(request):
     dados_script = ["$startTime = Get-Date -Format dd-MM-yyyy;\n"]
     query_unidade = list(Unidade.objects.values('nomeUo','numeroUo'))
     context = {'query_unidade': query_unidade}
+    username = request.user.username
+    data_hoje = date.today()
     if request.method == "POST":
         context = {}
         countField = int(request.POST.get('countField'))
@@ -159,14 +166,18 @@ def disable_user(request):
             nome_uo_ad = objeto_unidade.nomeUOnoAD
 
             dados_script = get_data_script_disable(dados_script,nome_logon,sede_ou_unidade,nome_uo_ad,descricao)
-    
+
+        save_log(username, data_hoje,'Desabilitar usuário',nome_logon)
         context = {'query_unidade': query_unidade, 'dados_script': dados_script}
     
     return render(request, 'user_app/disable_user_home.html', context)
 
+
 def copy_group(request):
     dados_script = []
     context = {}
+    username = request.user.username
+    data_hoje = date.today()
     if request.method == "POST":
         context = {}
         countField = int(request.POST.get('countField'))
@@ -175,6 +186,24 @@ def copy_group(request):
             nome_logon_destino = request.POST.get('field_email_destino[{}]'.format(i))
             
             dados_script = get_data_script_group(dados_script,nome_logon_base,nome_logon_destino)
+        nome_logon = 'Gerente: '+nome_logon_base +'/Adjunto: '+ nome_logon_destino
+        save_log(username, data_hoje,'Cópia de grupo',nome_logon)
         context = {'dados_script': dados_script}
 
     return render(request, 'user_app/copy_group_home.html', context)
+
+def grupo_unidades(request):
+    context = {}
+    if request.method == "POST":
+        data_nao_normalizada = request.POST.get('field_data_search')
+        context = {'data_hoje': normalize_date(data_nao_normalizada)}
+        try:
+            dados_script = Grupo.objects.get(nome='Grupo-'+data_nao_normalizada).script
+        except:
+            dados_script = "Dados não encontrados"
+        print(type(dados_script))
+        dados_script = dados_script.replace(',','').replace('[','').replace(']','').replace("'",'')
+
+        context = {'dados_script': dados_script,'data_nao_normalizada': normalize_date(data_nao_normalizada)}
+
+    return render(request, 'user_app/grupounidades.html',context)

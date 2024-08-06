@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Unidade, Transacao
+from .models import Unidade, Transacao, Grupo
 
 
 class ReadOnlyAdminMixin:
@@ -15,7 +15,9 @@ class ReadOnlyAdminMixin:
 class transacaoAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
     list_display = ('id', 'usuario', 'data', 'sistemaUtilizado', 'loginAlterado')
 
-
-
+class grupoAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
+    list_display = ('id', 'nome', 'data')
+    
 admin.site.register(Unidade)
+admin.site.register(Grupo)
 admin.site.register(Transacao, transacaoAdmin)

@@ -107,11 +107,6 @@
               {% if 'info' in message.tags %}<li>{{ message }}</li>{% endif %}
             {% endfor %}
             <br>
-            <a>Grupos gerais - adicionar em torno de 30 minutos após a criação</a>
-            {% for message in messages %}
-              {% if 'warning' in message.tags %}<li>{{ message }}</li>{% endif %}
-            {% endfor %}
-            <br>
           </ul>
         </div>
       {% endif %}
