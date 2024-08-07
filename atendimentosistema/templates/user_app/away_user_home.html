@@ -1,0 +1,71 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+
+
+{% block main %}
+
+
+<div
+  class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Afastar usuário Active Directory</h1>
+  <div class="btn-toolbar mb-2 mb-md-0">
+    <div class="btn-group mt-3 me-2">
+      <a href="{% url 'home' %}"><button type="button"
+          class="btn btn-primary">Voltar</button></a>
+    </div>
+  </div>
+</div>
+<div class="container-fluid">
+  <form action="{% url 'afastausuario' %}" class="myformuser" method="POST">
+    {% csrf_token %}
+    <input class="form-control countField" name="countField" id="countField" type="text" value=1 style="display: none;" >
+    <div class="field_wrapper">
+      <div class="row">
+        <div class="col-2 m-1"></div>
+        <div class="col m-1">
+          <input class="form-control " type="text"
+            name="field_email[0]" value=""
+            placeholder="nome.sobrenome" required="required"/>
+        </div>
+        <div class="col m-1" id="id_field_uo">
+          <select class="form-control" id="field_uo" name="field_uo[0]" required>
+            <option disabled selected hidden value="">Selecione a unidade do funcionário a ser afastado</option>
+              {% for unidade in query_unidade %}
+                <option  type="text"
+                  value='{{ unidade.numeroUo }}'>{{ unidade.nomeUo }}</option>
+              {% endfor %}
+          </select>
+        </div>
+        <div class="col-2 m-1"></div>
+      </div>
+    </div>
+    <div class="row ">
+      <div class="col-12 text-center m-3 ">
+        <a href="javascript:void(0);"
+          class="remove_button btn btn-danger"
+          title="Remove field">Remover linha</a>
+        <a href="javascript:void(0);"
+          class="disable_button btn btn-primary"
+          title="Add field">Adicionar linha</a>
+        <button id="btnOc" type="submit"
+          class="create_script_django btn btn-dark"
+          title="Add script">Criar script ps1</a>
+        </button>
+      </div>
+      <div class="row">
+        <textarea readonly class="form-control border border-secondary" id="textAreaCopy" rows="3" style="display: none;">
+          {% for x in dados_script %}
+          {{ x }}
+          {% endfor %}
+        </textarea>
+      </div>
+      <div class="row">
+        <div class="col-12 text-center m-1" id="textAreaBtn" style="display: none;">
+          <a class=" btn btn-success">Copiar</a>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+{% endblock %}

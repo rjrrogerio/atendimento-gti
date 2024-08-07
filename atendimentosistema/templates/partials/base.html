@@ -50,7 +50,10 @@
                   {% if user.is_authenticated %}
                   <a class="dropdown-item" href="/admin">Painel Administração</a>
                     <a class="dropdown-item" href="#"><strong>Usuário: {{user.username}}</strong></a>
-                    <a class="dropdown-item" href="/accounts/logout/">Logout</a>
+                    <form method="post" action="{% url 'logout' %}">
+                      {% csrf_token %}
+                      <button type="submit" class="dropdown-item">Logout</button>
+                    </form>
                   {% else %}
                     <a class="dropdown-item" href="/accounts/login">Login</a>
                   {% endif %}

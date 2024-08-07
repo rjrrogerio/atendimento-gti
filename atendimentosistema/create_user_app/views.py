@@ -11,13 +11,14 @@ from .utils.script_novo_usuario import create_password
 from .utils.script_novo_usuario import get_uo
 from .utils.script_novo_usuario import name_split
 from .utils.script_muda_usuario import get_data_script_change
+from .utils.script_afasta_usuario import get_data_script_away
 from .utils.script_add_grupo import get_data_script_group
 from .utils.script_desabilita_usuario import get_data_script_disable
 from .utils.create_log import save_log
 from .utils.script_add__grupo_geral import save_group
 from .models import Unidade, Grupo
 
-#@login_required
+@login_required
 def create_user(request):
     query_unidade = list(Unidade.objects.values('nomeUo','numeroUo'))
     context = {'query_unidade': query_unidade}
@@ -83,6 +84,7 @@ def create_user(request):
     
     return render(request, 'user_app/create_user_home.html', context)
 
+@login_required
 def change_user(request):
     dados_script = []
     username = request.user.username
@@ -144,6 +146,7 @@ def change_user(request):
     
     return render(request, 'user_app/change_user_home.html', context)
 
+@login_required
 def disable_user(request):
     dados_script = ["$startTime = Get-Date -Format dd-MM-yyyy;\n"]
     query_unidade = list(Unidade.objects.values('nomeUo','numeroUo'))
@@ -172,7 +175,28 @@ def disable_user(request):
     
     return render(request, 'user_app/disable_user_home.html', context)
 
+@login_required
+def away_user(request):
+    dados_script = ["$startTime = Get-Date -Format dd-MM-yyyy;\n"]
+    query_unidade = list(Unidade.objects.values('nomeUo','numeroUo'))
+    context = {'query_unidade': query_unidade}
+    username = request.user.username
+    data_hoje = date.today()
+    if request.method == "POST":
+        context = {}
+        countField = int(request.POST.get('countField'))
+        for i in range(countField):
+            objeto_unidade = get_uo(request.POST.get('field_uo[{}]'.format(i)))
+            nome_logon = request.POST.get('field_email[{}]'.format(i))
+            descricao = objeto_unidade.nomeUo
+            dados_script = get_data_script_away(dados_script,nome_logon,descricao)
 
+        save_log(username, data_hoje,'Afastar usuário',nome_logon)
+        context = {'query_unidade': query_unidade, 'dados_script': dados_script}
+    
+    return render(request, 'user_app/away_user_home.html', context)
+
+@login_required
 def copy_group(request):
     dados_script = []
     context = {}
@@ -192,6 +216,7 @@ def copy_group(request):
 
     return render(request, 'user_app/copy_group_home.html', context)
 
+@login_required
 def grupo_unidades(request):
     context = {}
     if request.method == "POST":
