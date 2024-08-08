@@ -106,6 +106,16 @@ $(function () {
     
     
   ;}); 
+
+  $('#textAreaBtn2').click(function() { 
+    const element = document.querySelector('#textAreaCopy2');
+    element.select();
+    element.setSelectionRange(0, 99999);
+    document.execCommand('copy');
+    document.getElementById("textAreaBtn2").innerHTML = "Copiado!";
+    
+    
+  ;}); 
   
   function TodayDate(){
     var today = new Date();
@@ -129,13 +139,13 @@ $(function () {
     dataSearch.defaultValue =TodayDate()+"";
   }
   
-  var textARea = document.getElementById('textAreaCopy')
+  var textARea = document.getElementById('textAreaCopy2')
   if (textARea !== null) {
     var content = textARea.value;
-    if(content.length>20)
+    if(content.length>5)
     {
-      document.getElementById('textAreaCopy').style.display = "block";
-      document.getElementById('textAreaBtn').style.display = "block";
+      document.getElementById('textAreaCopy2').style.display = "block";
+      document.getElementById('textAreaBtn2').style.display = "block";
     }
   }
   

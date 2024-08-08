@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date,timedelta
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
@@ -219,16 +219,27 @@ def copy_group(request):
 @login_required
 def grupo_unidades(request):
     context = {}
+    dados_script = None
+    data_nao_normalizada = None
+    data_hoje = date.today()
+    data_ontem = data_hoje - timedelta(days=1)
+    
+    try:
+        dados_script_d2 = Grupo.objects.get(nome='Grupo-'+str(data_ontem)).script
+        dados_script_d2 = dados_script_d2 + Grupo.objects.get(nome='Grupo-'+str(data_hoje)).script
+        dados_script_d2 = dados_script_d2.replace(',','').replace('[','').replace(']','').replace("'",'')
+    except:
+        dados_script_d2 = "Dados não encontrados"
+
     if request.method == "POST":
         data_nao_normalizada = request.POST.get('field_data_search')
-        context = {'data_hoje': normalize_date(data_nao_normalizada)}
         try:
             dados_script = Grupo.objects.get(nome='Grupo-'+data_nao_normalizada).script
         except:
             dados_script = "Dados não encontrados"
-        print(type(dados_script))
         dados_script = dados_script.replace(',','').replace('[','').replace(']','').replace("'",'')
-
-        context = {'dados_script': dados_script,'data_nao_normalizada': normalize_date(data_nao_normalizada)}
-
+        
+        
+    
+    context = {'dados_script_d2': dados_script_d2,'dados_script': dados_script,'data_nao_normalizada': normalize_date(data_nao_normalizada)}
     return render(request, 'user_app/grupounidades.html',context)

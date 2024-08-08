@@ -22,26 +22,39 @@
       <div class="col-2 m-1" id="datasearchfield">
         <input type="date" id="datasearch"
           class="form-control" name="field_data_search"
-          data-date-format="DD/MM/YYYY" required="required"
-          placeholder="Pesquisar">
+          data-date-format="DD/MM/YYYY"
+          placeholder="Pesquisar" >
       </div>
       <div class="col-1 m-1">
         <button id="btnOc" type="submit"
           class="btn btn-success"
-          title="Add script">Pesquisar</a>
+          title="Add script" >Pesquisar</a>
         </button>
       </div>
     </div>
     <div class="row text-center">
+      {% if dados_script_d2 %}
+      <a>Grupo para os usuários criados em D-1</a>
+      <textarea readonly class="form-control border border-secondary text-center mt-3 " id="textAreaCopy" rows="5">
+        {{dados_script_d2}}
+      </textarea>
+    </div>
+    <div class="row">
+      <div class="col-12 text-center m-1" id="textAreaBtn" >
+        <a class=" btn btn-primary">Copiar</a>
+      </div>
+    </div>
+    {% endif %}
+    <div class="row text-center">
       {% if dados_script %}
       <a>Grupo para os usuários criados no dia {{data_nao_normalizada}}</a>
-      <textarea readonly class="form-control border border-secondary text-center mt-3" id="textAreaCopy" rows="5" style="display: none;">
+      <textarea readonly class="form-control border border-secondary text-center mt-3 " id="textAreaCopy2" rows="5" style="display: none;">
         {{dados_script}}
       </textarea>
       {% endif %}
     </div>
     <div class="row">
-      <div class="col-12 text-center m-1" id="textAreaBtn" style="display: none;">
+      <div class="col-12 text-center m-1" id="textAreaBtn2" style="display: none;">
         <a class=" btn btn-primary">Copiar</a>
       </div>
     </div>
