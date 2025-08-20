@@ -1,71 +1,122 @@
+# User Creation System for Active Directory
 
-**<h1>Sistema de cadastro de usuário</h1>**
+This is a web application written in Python using the Django framework. It is used to generate PowerShell scripts for creating and managing users in Active Directory.
 
-Esse sistema serve para criar scripts PowerShell para criação de funcionários no AD. Toda a aplicação é web e escrita em python juntamente com o framework Django.
+## Features
 
-**<h2>Inicialização</h2>**
+- **User-friendly web interface:** Easily create, modify, and manage users through a simple web form.
+- **PowerShell script generation:** Automatically generates PowerShell scripts for various Active Directory tasks, including:
+    - Creating new users
+    - Modifying user attributes
+    - Disabling user accounts
+    - Managing group memberships
+- **Customizable templates:** The generated scripts can be easily customized to fit specific organizational needs.
+- **Secure password handling:** Includes options for setting temporary passwords and forcing a password change on the first logon.
 
-Para inicialização da aplicação, é recomendado a utilização do comando **XXXX** em um ambiente linux:
+## Getting Started
 
-**gunicorn --bind 0.0.0.0:8000 atendimentosistema.wsgi:application**
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-Embora isso seja somente uma recomendação! Você também pode inicializar com outro WSGI e em outro sistema operacional ou utilizar o runserver para rodar em ambiente local. 
+### Prerequisites
 
-python manage.py runserver
+- Python 3.8 or higher
+- pip (Python package installer)
 
-**Debug**
+### Installation
 
-Para inicialização em modo debug, é necessário alterar a variável localizada no settings.py:
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/your-username/your-repository.git
+    cd your-repository
+    ```
 
+2.  **Create and activate a virtual environment (recommended):**
+    ```bash
+    python -m venv venv
+    source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+    ```
+
+3.  **Install the required dependencies:**
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+4.  **Navigate to the Django project directory:**
+    ```bash
+    cd atendimentosistema
+    ```
+
+5.  **Apply the database migrations:**
+    ```bash
+    python manage.py migrate
+    ```
+
+6.  **Run the development server:**
+    ```bash
+    python manage.py runserver
+    ```
+    The application will be available at `http://127.0.0.1:8000/`.
+
+### Production
+
+For production environments, it is recommended to use a WSGI server like Gunicorn.
+
+```bash
+gunicorn --bind 0.0.0.0:8000 atendimentosistema.wsgi:application
+```
+
+## Usage
+
+Once the application is running, open your web browser and navigate to `http://127.0.0.1:8000/`. The web interface will guide you through the process of generating PowerShell scripts for user management.
+
+### Debug Mode
+
+To run the application in debug mode, you need to edit the `atendimentosistema/atendimentosistema/settings.py` file and set the `DEBUG` variable to `True`.
+
+```python
 DEBUG = True
+```
 
-**<h2>Comandos PowerShell</h2>**
+## PowerShell Commands
 
-**Comandos**
+A list of PowerShell commands and their functions.
 
-Abaixo teremos uma lista dos comandos que serão utilizados e qual sua finalidade
+| Command | Function |
+| :--- | :--- |
+| **-Name** | **Full Name** |
+| **-GivenName** | **First Name** |
+| **-Surname** | **Last Name** |
+| **-UserPrincipalName** | **User Logon Name** |
+| **-SamAccountName** | **User Logon Name (pre-Windows 2000)** |
+| **-DisplayName** | **Display Name** |
+| **-Description**| **Description** |
+| **-Office** | **Office** |
+| **-Company** | **Company** |
+| **-EmailAddress**| **Email** |
+| **-AccountPassword** | **Password** |
+| **-ChangePasswordAtLogon $true** | **Change password at next logon** |
+| **-AccountExpirationDate** | **Account expiration date** |
+| **-Department** | **Department** |
+| **-City** | **City** |
+| **-State** | **State** |
+| **-Path** | **Canonical object location** |
 
-|**Comando**|**Função do comando**|
-| :- | :- |
-|**-Name**|**Nome Completo**|
-|**-GivenName** |**Nome**|
-|**-Surname**|**Sobrenome**|
-|**preenchido pelo logon**|**Nome de logon do usuário**|
-|**-SamAccountName**|**Nome de logon do usuário (anterior ao Windows2000)**|
-|**-DisplayName**|**Nome Completo para exibicação**|
-|**-Description**|**Descrição**|
-|**-Office**|**Escritório**|
-|**-Company**|**Companhia**|
-|**-EmailAddress**|**Email**|
-|**-AccountPassword**|**Senha**|
-|**-ChangePasswordAtLogon $true**|**Alterar a senha no logon**|
-|**-AccountExpirationDate**|**Vencimento da conta**|
-|**-Department**|**Departamento**|
-|**-Company**|**Empresa**|
-|**-City**|**Cidade**|
-|**-State**|**Estado**|
-|**-Path**|**Local do objeto canônico**|
+### Add ProxyAddresses
 
-**Adicionar ProxyAddresses**
+`Set-ADUser email -add @{ProxyAddresses="smtp:email@sede.sescsp.org.br,SMTP:email@sescsp.org.br" -split ","}`
 
-Só é possível a adição de proxy após a criação do usuário no AD
+### Add Groups
 
-Set-ADUser email -add @{ProxyAddresses="smtp:email@sede.sescsp.org.br,SMTP:email@sescsp.org.br" -split ","}
+`Add-ADGroupMember -Identity group_name -Members email1, email2`
 
-**Adicionar grupos**
+### Complete Syntax Example
 
-Só é possível a adição de grupos após a criação do usuário no AD
-
-Add-ADGroupMember -Identity nome_do_grupo -Members email1, email2
-
-
-**<h2>Sintaxe</h2>**
-
-Sintaxe completa para criação de um usuário com os grupos incluídos e atributos inseridos:
-**New-ADUser -Name "Nome Sobrenome1 Sobrenome2" -GivenName "Nome" -Surname "Sobrenome1 Sobrenome2" -SamAccountName "nome.sobrenome2" -UserPrincipalName "nome.sobrenome2@sescsp.org.br" -EmailAddress "nome.sobrenome2@sescsp.org.br" -DisplayName "Nome Sobrenome1 Sobrenome2" -Company "SESCSP" -Description "Bertioga - temporario" -Office "SESC Bertioga" -Department "Bertioga" -City "Bertioga" -State "SP" -AccountPassword (ConvertTo-SecureString -AsPlainText “978_Nss#71” -Force) -ChangePasswordAtLogon $True -Path "OU=Usuarios,OU=71-Bertioga,OU=UNIDADES,DC=sescsp,DC=local" -AccountExpirationDate "30/12/2023" -Enabled $True;
-Set-ADUser nome.sobrenome2 -add @{ProxyAddresses="smtp:nome.sobrenome2@sede.sescsp.org.br,SMTP:nome.sobrenome2@sescsp.org.br" -split ","};
-Add-ADGroupMember -Identity "nome_do_grupo1" -Members nome.sobrenome2;
-Add-ADGroupMember -Identity "nome_do_grupo2" -Members nome.sobrenome2;
-Add-DistributionGroupMember -Identity "Grupo Geral Unidades SescSP" -Members nome.sobrenome2;
-Add-DistributionGroupMember -Identity "Grupo Geral Unidades do Interior SescSP" -Members nome.sobrenome2;
-Add-ADGroupMember -Identity "LIC-A3-TEMPORARIOS_SG" -Members nome.sobrenome2;**
+```powershell
+New-ADUser -Name "Name Surname1 Surname2" -GivenName "Name" -Surname "Surname1 Surname2" -SamAccountName "name.surname2" -UserPrincipalName "name.surname2@sescsp.org.br" -EmailAddress "name.surname2@sescsp.org.br" -DisplayName "Name Surname1 Surname2" -Company "SESCSP" -Description "Bertioga - temporary" -Office "SESC Bertioga" -Department "Bertioga" -City "Bertioga" -State "SP" -AccountPassword (ConvertTo-SecureString -AsPlainText “978_Nss#71” -Force) -ChangePasswordAtLogon $True -Path "OU=Usuarios,OU=71-Bertioga,OU=UNIDADES,DC=sescsp,DC=local" -AccountExpirationDate "30/12/2023" -Enabled $True;
+Set-ADUser name.surname2 -add @{ProxyAddresses="smtp:name.surname2@sede.sescsp.org.br,SMTP:name.surname2@sescsp.org.br" -split ","};
+Add-ADGroupMember -Identity "group_name1" -Members name.surname2;
+Add-ADGroupMember -Identity "group_name2" -Members name.surname2;
+Add-DistributionGroupMember -Identity "Grupo Geral Unidades SescSP" -Members name.surname2;
+Add-DistributionGroupMember -Identity "Grupo Geral Unidades do Interior SescSP" -Members name.surname2;
+Add-ADGroupMember -Identity "LIC-A3-TEMPORARIOS_SG" -Members name.surname2;
+```
