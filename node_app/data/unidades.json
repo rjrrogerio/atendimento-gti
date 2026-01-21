@@ -1,0 +1,29 @@
+[
+  {
+    "nomeUo": "Sede",
+    "numeroUo": "1",
+    "nomeUOnoAD": "Sede",
+    "grupoUo": "GrupoSede",
+    "cidadeUo": "São Paulo",
+    "local": "sede",
+    "estado": "SP"
+  },
+  {
+    "nomeUo": "Pompeia",
+    "numeroUo": "2",
+    "nomeUOnoAD": "Pompeia",
+    "grupoUo": "GrupoPompeia",
+    "cidadeUo": "São Paulo",
+    "local": "capital",
+    "estado": "SP"
+  },
+  {
+    "nomeUo": "Bertioga",
+    "numeroUo": "71",
+    "nomeUOnoAD": "71-Bertioga",
+    "grupoUo": "GrupoBertioga",
+    "cidadeUo": "Bertioga",
+    "local": "interior",
+    "estado": "SP"
+  }
+]
